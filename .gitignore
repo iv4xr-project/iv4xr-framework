@@ -1,3 +1,12 @@
+**/.DS_Store
+.project
+.classpath
+.settings/
+.idea/
+.metadata
+/mylog*.txt
+*.iml
+bin/
 target/
 pom.xml.tag
 pom.xml.releaseBackup
