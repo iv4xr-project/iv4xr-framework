@@ -19,7 +19,7 @@ import nl.uu.cs.aplib.mainConcepts.GoalStructure;
  *
  */
 
-public interface ITestExecutor {
+public interface ITestingToolPlugin {
 	
 	/**
 	 * Attach a test-agent to this executor. The agent is assumed to already have an
