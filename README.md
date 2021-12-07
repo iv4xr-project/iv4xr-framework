@@ -12,17 +12,55 @@ Iv4xr Framework is an agent-based framework for automated testing highly interac
 
   * **Goal-solving** for automatically solving testing tasks. There are different types of solver provided by iv4xr Framework:
 
-    * Develop domain-specific primitive goal-solvers using **tactical programming**.
-    * **A* pathfinder** to do automated spatial navigation (e.g. over a 3D surface).
-    * **Prolog binding**: allowing agents to build a model of its environment as Prolog facts and uses prolog-based reasoning to for solving goals.
-    * **Search-based algorithm**: when behavioral models are available (e.g. as EFSMs), search-based algorithms can be used to generate a test-suite for test agents.
+    * Develop domain-specific goal-solvers using **tactical programming**; this is suitable for developing a set of composable goals which do not require a complex algorithm to solve.
+    * **A* pathfinder** to do automated spatial navigation (e.g. over a 3D surface). This is suitable for solving goals related to physical navigation.
+    * **Prolog binding**: allowing agents to build a model of its environment as Prolog facts and uses prolog-based reasoning to for solving goals. This is suitable for solving goals that require some level of reasoning.
+    * **Search-based algorithm**: when behavioral models are available (e.g. as EFSMs), search-based algorithms can be used to generate a test-suite for test agents. This is suitable for solving goals that require complex planning, if a model of the problem is given.
     * **Model checker**: or use our model-checker to do it.
 
   * Integration with TESTAR to do **Autotmated explorative testing**.
   * Integration with **Reinforcement Learning** libraries for training agents.    
   * In addition to usual assertions/invariants, **LTL and Bounded LTL** can be used for expressing temporal properties that can be checked during testing.
 
-#### Papers
+#### How to build
+
+(Batman Pacman Maman)
+
+### Manuals
+
+
+#### Agent-based testing
+
+   * [Topic 1](link)
+   * [Topic 2](link)
+   * [etc](link)
+   * [APIs reference](link)
+
+#### Emotive testing
+
+   * [Topic 1](link)
+   * [Topic 2](link)
+   * [etc](link)
+   * [APIs reference](link)
+
+#### Automated explorative testing
+
+* [Topic 1](link)
+* [Topic 2](link)
+* [etc](link)
+* [APIs reference](link)
+
+#### Model-based testing
+
+* [Topic 1](link)
+* [Topic 2](link)
+* [etc](link)
+* [APIs reference](link)
+
+#### Training test agents
+
+
+### Papers
 
   * Extended abstract: [_Aplib: An Agent Programming Library for Testing Games_](http://ifaamas.org/Proceedings/aamas2020/pdfs/p1972.pdf), I. S. W. B. Prasetya,  Mehdi Dastani, in the International Conference on Autonomous Agents and Multiagent Systems (AAMAS), 2020.
 

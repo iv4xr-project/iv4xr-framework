@@ -87,9 +87,9 @@ public interface ITestFactory {
 	
 	/**
 	 * Return test results collected by the test-agent during its runs. The agent
-	 * stores this data in a 'data collector' ({@link eu.iv4xr.framework.mainConcepts.TestDataCollector})
-	 * attached to it. The default implementation of this method simply returns
-	 * this data collector.
+	 * stores this data in a 'data collector'
+	 * ({@link eu.iv4xr.framework.mainConcepts.TestDataCollector}) attached to it.
+	 * The default implementation of this method simply returns this data collector.
 	 */
 	default public TestDataCollector getTestResults() {
 		return  getAgent().getTestDataCollector() ;
