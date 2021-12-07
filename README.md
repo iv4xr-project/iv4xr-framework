@@ -8,7 +8,7 @@ Iv4xr Framework is an agent-based framework for automated testing highly interac
 
   * **Multi agent**: programming multiple autonomous test-agents that collaboratively test a system.
 
-  * **Emotion system**: simulating users' emotion, e.g. to facilitate automated user experience assesment.
+  * **Emotive testing**: simulating users' emotion, e.g. to facilitate automated user experience assesment.
 
   * **Goal-solving** for automatically solving testing tasks. There are different types of solver provided by iv4xr Framework:
 
@@ -34,6 +34,7 @@ Iv4xr Framework is an agent-based framework for automated testing highly interac
    * [Topic 1](link)
    * [Topic 2](link)
    * [etc](link)
+   * [note for me: dont forget to mention data collection](link)
    * [APIs reference](link)
 
 #### Emotive testing
