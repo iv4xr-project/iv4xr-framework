@@ -6,8 +6,10 @@
 .metadata
 /mylog*.txt
 *.iml
+*.class
 bin/
 target/
+output/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -18,3 +20,10 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
+# ignore TESTAR temp or binary files
+index.log
+windows.dll
+suts/gym/windows/*
+# allow TESTAR dependency files
+!resources/windows10/windows.dll
+!suts/gym/windows/ExtractLabRecruitsHere.txt

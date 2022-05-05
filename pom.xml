@@ -105,13 +105,23 @@
         <dependency>
             <groupId>com.github.iv4xr-project</groupId>
             <artifactId>aplib</artifactId>
-            <version>1.3.3</version>
+            <version>1.4.2</version>
         </dependency>
-
         <dependency>
             <groupId>com.github.iv4xr-project</groupId>
-            <artifactId>mbt</artifactId>
-            <version>1.0.1c</version>
+            <artifactId>iv4xrDemo</artifactId>
+            <version>2.3.4c</version>
+        </dependency>
+        <!-- https://jitpack.io/com/github/iv4xr-project/TESTAR_iv4xr/be565c769fba651f812aacf86486a98db68b3361/build.log -->
+        <dependency>
+            <groupId>com.github.iv4xr-project</groupId>
+            <artifactId>TESTAR_iv4xr</artifactId>
+            <version>be565c769fba651f812aacf86486a98db68b3361</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.iv4xr-project</groupId>
+            <artifactId>iv4xr-se-plugin</artifactId>
+            <version>v0.6.0</version>
         </dependency>
   </dependencies>
 </project>

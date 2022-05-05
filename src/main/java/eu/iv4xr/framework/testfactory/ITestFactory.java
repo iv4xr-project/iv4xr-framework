@@ -68,14 +68,6 @@ public interface ITestFactory {
 	public void reset() ;
 	
 	/**
-	 * Return the next goal-structure to execute. A goal-structure might represent
-	 * a whole test-case, or it might represent a single test-step that constitutes
-	 * a test-case. The method returns null if there is no next goal-structure
-	 * to return.
-	 */
-	public GoalStructure nextGoal() ;
-	
-	/**
 	 * Gives the goal/test-case G for the agent attached to this executor, to be
 	 * executed. After the execution, the method returns the goal. It can be
 	 * inspected for its status (e.g. if it was achieved/success or failed).
