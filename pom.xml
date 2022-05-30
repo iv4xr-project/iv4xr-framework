@@ -116,7 +116,7 @@
         <dependency>
             <groupId>com.github.iv4xr-project</groupId>
             <artifactId>TESTAR_iv4xr</artifactId>
-            <version>be565c769fba651f812aacf86486a98db68b3361</version>
+            <version>v3.3b</version>
         </dependency>
         <dependency>
             <groupId>com.github.iv4xr-project</groupId>
