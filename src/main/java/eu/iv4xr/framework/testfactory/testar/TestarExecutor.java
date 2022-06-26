@@ -14,7 +14,7 @@ public class TestarExecutor {
 
 		// Prepare the path that contains the TESTAR protocol to be executed
 		String settingsDir = "." + File.separator + "resources\\settings" + File.separator;
-		String protocolName = "labrecruits_commands_testar_agent_navmesh_explorer";
+		String protocolName = "se_commands_testar_navigate";
 		String testSettingsFileName = settingsDir + protocolName + File.separator + "test.settings";
 		System.out.println("Test settings is <" + testSettingsFileName + ">");
 
