@@ -11,7 +11,23 @@ Current we provide two (??) emotion appraisal systems
 ### Example
 
 ```java
+public class MyUserCharacterization extends UserCharacterization {
+  ...
+}
+```
+
+```java
+var emotionAppraisalSystem = new EmotionAppraisalSystem("agentSmith") ;
+eas.addGoal("goal1",10)
+   .addGoal("goal2",5)
+   .withUserModel(new MyUserCharacterization())
+```
+
+```java
 var emotiveAgent = new EmotiveTestAgent("agentSmith","role") ;
+
+var occState = new OCCState(emotiveAgent,emotionAppraisalSystem) ;
+
 emotiveAgent.attachState(state)
   .attachEnvironment(env)
   .setTestDataCollector(testdata)
@@ -19,8 +35,14 @@ emotiveAgent.attachState(state)
   .attachEmotionState(occState)
 
 emotiveAgent.setGoal(G)
+```
 
-// the we run the agent...  
+```java
+for(int cycle i=0; i<maxBudget; cycle++) {
+  emotiveAgent.update() ;
+  var emotions = emotiveAgent.getEmotionState().getCurrentEmotion() ;
+  // do something with the emotions :)
+}
 ```
 
 ### API References
