@@ -4,7 +4,13 @@ import eu.iv4xr.framework.mainConcepts.IEmotion;
 
 /**
  * A wrapper over OCC's Emotion object that implements the interface
- * {@link IEmotion}.
+ * {@link IEmotion}. An OCCEmotion object is essentially a tuple
+ * (g,type,i,t0,...) where type is the type of the emotion,
+ * e.g. fear, and i is its intensity, and t0 is the time when it is
+ * stimulated. g is the target of the emotion, in the current setup
+ * this represents some goal e.g. "finishing a game".
+ * 
+ * @author Wish  
  */
 public class OCCEmotion implements IEmotion {
 	
@@ -46,7 +52,7 @@ public class OCCEmotion implements IEmotion {
 
 	@Override
 	public Long getActivationTime() {
-		return null ;
+		return (long) em.t0 ;
 	}
 
 }
