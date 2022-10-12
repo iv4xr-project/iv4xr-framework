@@ -201,7 +201,7 @@ public class OCCState implements IEmotionState {
 	 * specified goal. The goal is identified by its name.
 	 * Negative value means decrease.
 	 */	
-	public Float difStress(String goal) {
+	public Float difDistress(String goal) {
 		return getGoalBasedEmotionDeltaIntensity(goal,EmotionType.Distress) ;
 	}
 	

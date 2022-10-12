@@ -1,4 +1,4 @@
-## Emotive Testing with OCC
+## UX Testing with OCC
 
 **OCC** standards for "Ortony-Clore-Collins". It refers to a [theory from Psychology](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4243519/#:~:text=The%20model%20proposed%20by%20Ortony%2C%20Clore%2C%20and%20Collins%20(commonly,and%20those%20focused%20on%20objects.) about different types of emotions (e.g. hope, distress, etc) and what makes them emerge. The theory has been formalized into computational models by various computer scientists, providing a way to 'predict' when certain emotion emerges. By 'predicting' we mean that such a computational model, if additionally given a model of a person's mental process, will be able to calculate if certain emotions would emerge when e.g. we simulate the occurrence of some events on the person.
 
@@ -73,49 +73,124 @@ public class MiniDungeonEventsProducer extends SyntheticEventsProducer {
 }
 ```
 
-The full implementation is [here](../src/main/java/nl/uu/cs/aplib/exampleUsages/miniDungeon/testAgent/MiniDungeonEventsProducer).
+The [full implementation is here](../src/main/java/nl/uu/cs/aplib/exampleUsages/miniDungeon/testAgent/MiniDungeonEventsProducer.java).
 
 
 
 #### 2. Constructing a Player Characterization
 
-Before we can
+Next we need to provide a "model" of the game players ("model" is of course a very foggy word; we will clarify this in a minute).
+Indeed, users may have different play styles, so we may want to construct different models representing different play styles.
+For our example, let's just have one model :)
+
+In JOCC, a player-model, also called a _player characterization_, is a class that implements the abstract class `UserCharacterization`. We show below the methods that need to be implemented:
 
 ```java
-public class MyUserCharacterization extends UserCharacterization {
-  ...
+public class MiniDungeonPlayerCharacterization extends UserCharacterization {
+   public void eventEffect(Event e, BeliefBase beliefbase) ...
+   public int desirabilityAppraisalRule(Goals_Status goals_status, String eventName, String goalName) ...
+   public int emotionIntensityDecayRule(EmotionType etype) ...
+   public int intensityThresholdRule(EmotionType etyp) ...
 }
 ```
 
-```java
-var emotionAppraisalSystem = new EmotionAppraisalSystem("agentSmith") ;
-eas.addGoal("goal1",10)
-   .addGoal("goal2",5)
-   .withUserModel(new MyUserCharacterization())
+  * `intensityThresholdRule(ety)` specifies what would the the threshold value for producing an emotion of type ety (e.g. fear). The underlying calculation first infers a raw intensity (also called potential intensity). The threshold is subtracted from this raw intensity value. This becomes the output intensity, but only if it is non-negative.
+
+  For the exact formula used to calculate the raw intensity, see [Ansari et al. _An Appraisal Transition System for Event-Driven Emotions in Agent-Based Player Experience Testing_](https://arxiv.org/pdf/2105.05589).
+
+  * `emotionIntensityDecayRule(ety)` specifies has fast intensity decays.
+
+  * `desirabilityAppraisalRule(status,e,g)` specifies how desirable an event e would be, towards achieving the goal g.
+
+  * `eventEffect(e,B)` descrives how the event e would affect the player's (that is, the player that we are modelling) perception on the likelihood on achieving different goals. B is a model of what the player's currently believe (e.g. it might believe that achieving a goal g is still possible).
+
+As an example the [full code of MiniDungeonPlayerCharacterization can be seen here](../src/main/java/nl/uu/cs/aplib/exampleUsages/miniDungeon/testAgent/MiniDungeonPlayerCharacterization.java).
+
+#### 3. Putting things together
+
+We will first create a test agent and also create an instance of the MiniDungeon game. Then we attach to it agent: a state, an 'environment' that interfaces it with the game, and the event producer we discussed before:
+
+```Java
+var agent          = new EmotiveTestAgent("Frodo","Frodo") ;
+DungeonApp app     = deployApp() ;
+
+var state = ...
+agent. attachState(state)
+     . attachEnvironment(new MyAgentEnv(app))
+     . attachSyntheticEventsProducer(new MiniDungeonEventsProducer()) ;
 ```
 
-```java
-var emotiveAgent = new EmotiveTestAgent("agentSmith","role") ;
+Next, we need an instance of JOCC. More precisely, we need an instance of its `EmotionAppraisalSystem`. This is the entry class to JOCC. It will need a representation of 'belief'; we can use one provided by the class `OCCBeliefBase`. As 'belief' it stores goals (that you register to it), and for each goal a value representing the perceived/believed likelihood of achieving it in the future. The belief will also hold a reference to the agent's state that records things about the MiniDungeon's state that the agent observed/observed (e.g. information on the player health).
 
-var occState = new OCCState(emotiveAgent,emotionAppraisalSystem) ;
+```Java
+OCCBeliefBase bbs = new OCCBeliefBase()
+			 . attachFunctionalState(state) ;
 
-emotiveAgent.attachState(state)
-  .attachEnvironment(env)
-  .setTestDataCollector(testdata)
-  .attachSyntheticEventsProducer(evensGenerator)
-  .attachEmotionState(occState)
+EmotionAppraisalSystem eas = new EmotionAppraisalSystem(agent.getId())
+   . withUserModel(new MiniDungeonPlayerCharacterization())
+   . attachEmotionBeliefBase(bbs) ;
 
-emotiveAgent.setGoal(G)
+... // few other things we need to setup
 ```
 
-```java
-for(int cycle i=0; i<maxBudget; cycle++) {
-  emotiveAgent.update() ;
-  var emotions = emotiveAgent.getEmotionState().getCurrentEmotion() ;
-  // do something with the emotions :)
+Then, below we attach JOCC/the emotion appraisal system created above to our testagent:
+
+```Java
+OCCState emotionState = new OCCState(agent,eas)
+     .setEventTranslator(msg -> MiniDungeonEventsProducer.translateAplibMsgToOCCEvent(msg)) ;
+agent.attachEmotionState(emotionState) ;
+```
+
+Now we are ready to do a test. JOCC itself only provides a system to calculates if, and which, emotions would emerge. JOCC cannot on its own trigger any execution on the MiniDungeon Game. You will need a test scenario, that will interact with the game, e.g. to try to get to the level-0 shrine and cleanse it. Using iv4xr we can program with with goals. The game MiniDungeon already comes with a set of basic goals (and tactics). Let's use this to program a test scenario. The scenario below guides the test-agent to automatically play the game. It is programmed to first get a scroll with id `S0_1`, then it goes to the shrine of level-0, and use the scroll there (which then would cleanse the shrine).
+
+```Java
+var goalLib = new GoalLib(); // MiniDungeon's goal-library
+var G = SEQ(goalLib.smartEntityInCloseRange(agent, "S0_1"),
+   goalLib.entityInteracted("S0_1"),
+   goalLib.smartEntityInCloseRange(agent, "SM0"),
+   goalLib.entityInteracted("SM0"),
+   SUCCESS());
+
+agent.setGoal(G)   
+```
+
+Now we are ready to run the test. We run the agent in an update-loop, until the goal G is either achieved or failed. After each update you can inspect the emotion-state, e.g. to check is a certain emotion is present:
+
+```Java
+while (G.getStatus().inProgress()) {
+  agent.update();
+  // the agent does a single update, after which we can inspect the emotion-state
+  // e.g. to check if emotionState.fear() > 0
 }
+```
+
+#### 4. Verifying UX property
+
+We can also use Linear Temporal Logic (LTL) to express a UX requirement as an LTL formula and then check it on a run such as the one above, as shown below:
+
+```Java
+// eventually there is an increase in fear's intensity:
+LTL<SimpleState> f1 = eventually(S ->
+   getEmotionState(S).difFear(gCleansedName) != null
+   && getEmotionState(S).difFear(gCleansedName) > 0) ;
+
+// eventually there is an increase in distress' intensity:
+LTL<SimpleState> f2 = eventually(S ->
+    getEmotionState(S).difDistress(gCleansedName) != null
+    && getEmotionState(S).difDistress(gCleansedName) > 0) ;
+```
+
+We can now add these formulas to the agent, and asks it to re-run the previous scenario:
+
+```Java
+agent.addLTL(f1,f2) ;
+while (G.getStatus().inProgress()) agent.update();
+assertTrue(agent.evaluateLTLs()) ;
 ```
 
 ### API References
 
 ### Relevant papers
+
+[_An Appraisal Transition System for Event-Driven Emotions in Agent-Based Player Experience Testing_](https://arxiv.org/pdf/2105.05589), Ansari, Prasetya, Dastani, Dignum, Keller. In
+International Workshop on Engineering Multi-Agent Systems (EMAS), 2021.

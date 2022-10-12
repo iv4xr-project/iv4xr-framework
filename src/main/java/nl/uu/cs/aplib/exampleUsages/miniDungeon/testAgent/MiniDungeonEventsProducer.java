@@ -14,9 +14,8 @@ import nl.uu.cs.aplib.utils.Pair;
 
 /**
  * Implementing a SyntheticEventsProducer for the game MiniDungeon. As this
- * class is only meant as a part of demonstrating OCC, we will keep it
- * somewhat simple. We will only produce few
- * types of events:
+ * class is only meant as a part of demonstrating OCC, we will keep it somewhat
+ * simple. We will only produce few types of events:
  * 
  * <ol>
  * <li>Ouch-event: triggered when the agent's hp goes down.

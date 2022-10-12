@@ -1,8 +1,12 @@
 package nl.uu.cs.aplib.exampleUsages.miniDungeon;
 
 import static nl.uu.cs.aplib.AplibEDSL.SEQ;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+
+import eu.iv4xr.framework.extensions.ltl.LTL;
+import static eu.iv4xr.framework.extensions.ltl.LTL.* ;
 
 import eu.iv4xr.framework.extensions.occ.EmotionAppraisalSystem;
 import eu.iv4xr.framework.extensions.occ.OCCBeliefBase;
@@ -16,6 +20,9 @@ import nl.uu.cs.aplib.exampleUsages.miniDungeon.testAgent.MiniDungeonPlayerChara
 import nl.uu.cs.aplib.exampleUsages.miniDungeon.testAgent.MyAgentEnv;
 import nl.uu.cs.aplib.exampleUsages.miniDungeon.testAgent.MyAgentState;
 import nl.uu.cs.aplib.exampleUsages.miniDungeon.testAgent.Utils;
+import nl.uu.cs.aplib.mainConcepts.GoalStructure;
+import nl.uu.cs.aplib.mainConcepts.SimpleState;
+
 import static nl.uu.cs.aplib.AplibEDSL.* ;
 
 import static nl.uu.cs.aplib.exampleUsages.miniDungeon.testAgent.MiniDungeonPlayerCharacterization.* ;
@@ -33,38 +40,8 @@ public class PXTest_MiniDungeon {
 		return app ;
 	}
 	
-	@Test
-	public void test1() throws Exception {
-		// Create an instance of the game:
-		DungeonApp app = deployApp() ;
-		
-		var goalLib        = new GoalLib();
-		MyAgentState state = new MyAgentState();
-		var agent          = new EmotiveTestAgent("Frodo","Frodo") ;
-		//var agent = new TestAgent("Smeagol", "Smeagol");
-		
-		agent. attachState(state)
-	         . attachEnvironment(new MyAgentEnv(app)) 
-	         . attachSyntheticEventsProducer(new MiniDungeonEventsProducer()) ;
-		
-		OCCBeliefBase bbs = new OCCBeliefBase() 
-			 . attachFunctionalState(state) ;
-
-		EmotionAppraisalSystem eas = new EmotionAppraisalSystem(agent.getId()) 
-			 . withUserModel(new MiniDungeonPlayerCharacterization())
-			 . attachEmotionBeliefBase(bbs) 
-			 . addGoal(shrineCleansed, 70)
-			 ;
-		
-		eas.addInitialEmotions();
-		
-		OCCState emotionState = new OCCState(agent,eas) 
-			 . setEventTranslator(msg -> MiniDungeonEventsProducer.translateAplibMsgToOCCEvent(msg)) ;
-		
-		
-		agent.attachEmotionState(emotionState) ;
-
-		
+	GoalStructure testScenario1(TestAgent agent) {
+		var goalLib = new GoalLib();
 		//
 		// Specify a goal for the agent: search and grab scroll S0 then use it on the
 		// Shrine.
@@ -78,14 +55,12 @@ public class PXTest_MiniDungeon {
 				    goalLib.smartEntityInCloseRange(agent, "SM0"), 
 				    goalLib.entityInteracted("SM0"),
 				    SUCCESS());
-
-		// Now, create an agent, attach the game to it, and give it the above goal:
-	agent
-		     .setGoal(G);
-
-		Thread.sleep(1000);
-
-		// Now we run the agent:
+		return G ;
+	}
+	
+	void runTheAgent(EmotiveTestAgent agent, GoalStructure G, int budget) throws InterruptedException {
+		var state = (MyAgentState) agent.state() ;
+		var emotionState = (OCCState) agent.getEmotionState() ;
 		System.out.println(">> Start agent loop...");
 		int k = 0;
 		while (G.getStatus().inProgress()) {
@@ -106,11 +81,76 @@ public class PXTest_MiniDungeon {
 			info += ", dFear=" + emotionState.difFear(shrineCleansed.name) ;
 			System.out.println(info);
 			// delay to slow it a bit for displaying:
-			Thread.sleep(50);
-			if (k >= 600)
+			//Thread.sleep(50);
+			if (k >= budget)
 				break;
 			k++;
 		}
+
+	}
+	
+	OCCState getEmotionState(SimpleState S) {
+		return (OCCState) ((EmotiveTestAgent) S.owner()).getEmotionState() ;
+	}
+	
+	@Test
+	public void test1() throws Exception {
+		// Create an instance of the game:
+		DungeonApp app = deployApp() ;
+		
+		var agent = new EmotiveTestAgent("Frodo","Frodo") ;
+		
+		agent. attachState(new MyAgentState())
+	         . attachEnvironment(new MyAgentEnv(app)) 
+	         . attachSyntheticEventsProducer(new MiniDungeonEventsProducer()) ;
+		
+		OCCBeliefBase bbs = new OCCBeliefBase() 
+			 . attachFunctionalState(agent.state()) ;
+
+		EmotionAppraisalSystem eas = new EmotionAppraisalSystem(agent.getId()) 
+			 . withUserModel(new MiniDungeonPlayerCharacterization())
+			 . attachEmotionBeliefBase(bbs) 
+			 . addGoal(shrineCleansed, 70)
+			 ;
+		
+		eas.addInitialEmotions();
+		
+		OCCState emotionState = new OCCState(agent,eas) 
+			 . setEventTranslator(msg -> MiniDungeonEventsProducer.translateAplibMsgToOCCEvent(msg)) ;
+		
+		
+		agent.attachEmotionState(emotionState) ;
+
+		
+		//
+		// Specify a goal for the agent: search and grab scroll S0 then use it on the
+		// Shrine.
+		//
+		var G = testScenario1(agent) ;
+		
+		String gCleansedName = MiniDungeonPlayerCharacterization.shrineCleansed.name ;
+		
+		LTL<SimpleState> fear = 
+			eventually(S -> 
+				getEmotionState(S).difFear(gCleansedName) != null
+				&& getEmotionState(S).difFear(gCleansedName) > 0) ;
+		
+		LTL<SimpleState> distress = 
+				eventually(S -> 
+					getEmotionState(S).difDistress(gCleansedName) != null
+					&& getEmotionState(S).difDistress(gCleansedName) > 0) ;
+
+		// Now, create an agent, attach the game to it, and give it the above goal:
+		agent.setGoal(G);
+		agent.addLTL(fear) ;
+		// if we add distress, it will fail:
+		//agent.addLTL(fear,distress) ;
+
+		Thread.sleep(1000);
+
+		// Now we run the agent:
+		runTheAgent(agent,G,600) ;
+		assertTrue(agent.evaluateLTLs()) ;
 		// System.exit(0);
 	}
 
