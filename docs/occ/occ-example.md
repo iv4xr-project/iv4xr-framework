@@ -4,7 +4,7 @@ As an example we will use the game MiniDungeon as our (System Under Test/SUT). T
 
 ![MiniDungeon Screenshot-1](./minidungeonShot3.png)![MiniDungeon Screenshot-2](./minidungeonShot2.png)
 
-In this game, the player can go from one level to the next one, until it gets to the final level. Access to the next level is guarded by a shrine, which can teleport the player to the next level. However, the shrine must be cleansed first before it can be used as a teleporter. To cleanse it, the player need to use a scroll (gray icon in the game). There are usually several scrolls dropped in a level, but only one of them (a holy scroll) can do the cleansing. The player does not know which scroll is holy until it tries to use it on a shrine. There are also monsters in the levels that can hurt the player, but also potions that can heal the player or enhance its combat.
+In this game, the player can go from one level to the next one, until the final level. Access to the next level is guarded by a _shrine_, which can teleport the player to the next level. However, the shrine must be _cleansed_ first before it can be used as a teleporter. To cleanse it, the player needs to use a _scroll_ (gray icon in the game). There are usually several scrolls dropped in a level, but only one of them (a holy scroll) can do the cleansing. The player does not know which scroll is holy until it tries to use it on a shrine. There are also monsters in the levels that can hurt the player, but also potions that can heal the player or enhance its combat.
 
 Imagine we want to run some test scenarios to see that the first level of MiniDungeon can generate tension. In terms of OCC, we want to see if one of these scenarios would generate the distress emotion, or at least fear.
 
@@ -45,11 +45,18 @@ Next we need to provide a "model" of the game players ("model" is of course a ve
 Indeed, users may have different play styles, so we may want to construct different models representing different play styles.
 For our example, let's just have one model :)
 
-In JOCC, a player-model, also called a _player characterization_, is a class that implements the abstract class `UserCharacterization`. We show below the methods that need to be implemented:
+Let us first specify a goal, towards which we want to know what kind of emotions players might have. As an example, let's consider "cleansing the shrine in level-0" as a goal:
+
+```Java
+Goal shrineCleansed = new Goal("A shrine is cleansed.")
+     . withSignificance(8) ;
+```
+
+In JOCC, a player-model, also called a _player characterization_, is a class that implements the abstract class `XUserCharacterization`. We show below the methods that need to be implemented:
 
 ```java
-public class MiniDungeonPlayerCharacterization extends UserCharacterization {
-   public void eventEffect(Event e, BeliefBase beliefbase) ...
+public class MiniDungeonPlayerCharacterization extends XUserCharacterization {
+   public void eventEffect(XEvent e, BeliefBase beliefbase) ...
    public int desirabilityAppraisalRule(Goals_Status goals_status, String eventName, String goalName) ...
    public int emotionIntensityDecayRule(EmotionType etype) ...
    public int intensityThresholdRule(EmotionType etyp) ...
@@ -82,20 +89,24 @@ agent. attachState(state)
      . attachSyntheticEventsProducer(new MiniDungeonEventsProducer()) ;
 ```
 
-Next, we need an instance of JOCC. This is implemented by the class `Iv4xrOCCEngine`, so we can create an instance of the latter. This OCC-engine will need to be attached to our emotive test-agent. We also need to attach the player-characterzation we wrote above, and also ....xxxx
 
+Next, we need an instance of JOCC. This is implemented by the class `Iv4xrOCCEngine`, so we can create an instance of the latter. This OCC-engine will need to be attached to our emotive test-agent. We also need to attach the player-characterzation we wrote above:
 
 
 ```Java
 var occEngine = new Iv4xrOCCEngine(agent.getId())
    . attachToEmotiveTestAgent(agent)
-   . withUserModel(new MiniDungeonPlayerCharacterization())
-   . setEventTranslator(msg -> MiniDungeonEventsProducer.translateAplibMsgToOCCEvent(msg))
-   . addGoal(shrineCleansed, 70) ;
-
-... // few other things we need to setup
+   . withUserModel(new MiniDungeonPlayerCharacterization()) ;
 ```
 
+Next, we register our "cleanse the shrine" goal to the OCC-engine above. We also add initial emotions (it would set the likelihood of the `shrineCleansed`-goal to 0.5, and also add initial hope and fear towards this goal to 0.5 the maximum intensity).
+
+
+```Java
+occEngine.addGoal(shrineCleansed, 70) ;
+occEngine.addInitialEmotions();
+
+```
 
 Now we are ready to do a test. JOCC itself only provides a system to calculates if, and which, emotions would emerge. JOCC cannot on its own trigger any execution on the MiniDungeon Game. You will need a test scenario, that will interact with the game, e.g. to try to get to the level-0 shrine and cleanse it. Using iv4xr we can program with with goals. The game MiniDungeon already comes with a set of basic goals (and tactics). Let's use this to program a test scenario. The scenario below guides the test-agent to automatically play the game. It is programmed to first get a scroll with id `S0_1`, then it goes to the shrine of level-0, and use the scroll there (which then would cleanse the shrine).
 
@@ -127,13 +138,13 @@ We can also use Linear Temporal Logic (LTL) to express a UX requirement as an LT
 ```Java
 // eventually there is an increase in fear's intensity:
 LTL<SimpleState> f1 = eventually(S ->
-   getEmotionState(S).difFear(gCleansedName) != null
-   && getEmotionState(S).difFear(gCleansedName) > 0) ;
+   getEmotionState(S).difFear(shrineCleansed.name) != null
+   && getEmotionState(S).difFear(shrineCleansed.name) > 0) ;
 
 // eventually there is an increase in distress' intensity:
 LTL<SimpleState> f2 = eventually(S ->
-    getEmotionState(S).difDistress(gCleansedName) != null
-    && getEmotionState(S).difDistress(gCleansedName) > 0) ;
+    getEmotionState(S).difDistress(shrineCleansed.name) != null
+    && getEmotionState(S).difDistress(shrineCleansed.name) > 0) ;
 ```
 
 We can now add these formulas to the agent, and asks it to re-run the previous scenario:
