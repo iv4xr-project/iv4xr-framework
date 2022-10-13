@@ -3,11 +3,11 @@ package nl.uu.cs.aplib.exampleUsages.miniDungeon.testAgent;
 import eu.iv4xr.framework.extensions.occ.BeliefBase;
 import eu.iv4xr.framework.extensions.occ.BeliefBase.Goals_Status;
 import eu.iv4xr.framework.extensions.occ.Emotion.EmotionType;
-import eu.iv4xr.framework.extensions.occ.Event;
 import eu.iv4xr.framework.extensions.occ.Goal;
 import eu.iv4xr.framework.extensions.occ.GoalStatus;
 import eu.iv4xr.framework.extensions.occ.OCCBeliefBase;
-import eu.iv4xr.framework.extensions.occ.UserCharacterization;
+import eu.iv4xr.framework.extensions.occ.XEvent;
+import eu.iv4xr.framework.extensions.occ.XUserCharacterization;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import eu.iv4xr.framework.mainConcepts.WorldModel;
 
@@ -29,7 +29,7 @@ import eu.iv4xr.framework.mainConcepts.WorldModel;
  * @author Wish
  *
  */
-public class MiniDungeonPlayerCharacterization extends UserCharacterization{
+public class MiniDungeonPlayerCharacterization extends XUserCharacterization{
 
 	public static Goal shrineCleansed = new Goal("A shrine is cleansed.").withSignificance(8) ;
 	
@@ -38,7 +38,7 @@ public class MiniDungeonPlayerCharacterization extends UserCharacterization{
 	 * likelihood of different goals.
 	 */
 	@Override
-	public void eventEffect(Event e, BeliefBase beliefbase) {
+	public void eventEffect(XEvent e, BeliefBase beliefbase) {
 		
 		GoalStatus status = beliefbase.getGoalsStatus().goalStatus(shrineCleansed.name) ;
 		if(status == null) return ;

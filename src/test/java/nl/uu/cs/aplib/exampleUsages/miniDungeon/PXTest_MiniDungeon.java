@@ -9,6 +9,7 @@ import eu.iv4xr.framework.extensions.ltl.LTL;
 import static eu.iv4xr.framework.extensions.ltl.LTL.* ;
 
 import eu.iv4xr.framework.extensions.occ.EmotionAppraisalSystem;
+import eu.iv4xr.framework.extensions.occ.Iv4xrOCCEngine;
 import eu.iv4xr.framework.extensions.occ.OCCBeliefBase;
 import eu.iv4xr.framework.extensions.occ.OCCState;
 import eu.iv4xr.framework.mainConcepts.EmotiveTestAgent;
@@ -103,42 +104,31 @@ public class PXTest_MiniDungeon {
 		agent. attachState(new MyAgentState())
 	         . attachEnvironment(new MyAgentEnv(app)) 
 	         . attachSyntheticEventsProducer(new MiniDungeonEventsProducer()) ;
-		
-		OCCBeliefBase bbs = new OCCBeliefBase() 
-			 . attachFunctionalState(agent.state()) ;
 
-		EmotionAppraisalSystem eas = new EmotionAppraisalSystem(agent.getId()) 
+		var occEngine = new Iv4xrOCCEngine(agent.getId()) 
+			 . attachToEmotiveTestAgent(agent) 
 			 . withUserModel(new MiniDungeonPlayerCharacterization())
-			 . attachEmotionBeliefBase(bbs) 
 			 . addGoal(shrineCleansed, 70)
 			 ;
 		
-		eas.addInitialEmotions();
+		occEngine.addInitialEmotions();
 		
-		OCCState emotionState = new OCCState(agent,eas) 
-			 . setEventTranslator(msg -> MiniDungeonEventsProducer.translateAplibMsgToOCCEvent(msg)) ;
-		
-		
-		agent.attachEmotionState(emotionState) ;
-
 		
 		//
 		// Specify a goal for the agent: search and grab scroll S0 then use it on the
 		// Shrine.
 		//
 		var G = testScenario1(agent) ;
-		
-		String gCleansedName = MiniDungeonPlayerCharacterization.shrineCleansed.name ;
-		
+				
 		LTL<SimpleState> fear = 
 			eventually(S -> 
-				getEmotionState(S).difFear(gCleansedName) != null
-				&& getEmotionState(S).difFear(gCleansedName) > 0) ;
+				getEmotionState(S).difFear(shrineCleansed.name ) != null
+				&& getEmotionState(S).difFear(shrineCleansed.name ) > 0) ;
 		
 		LTL<SimpleState> distress = 
 				eventually(S -> 
-					getEmotionState(S).difDistress(gCleansedName) != null
-					&& getEmotionState(S).difDistress(gCleansedName) > 0) ;
+					getEmotionState(S).difDistress(shrineCleansed.name ) != null
+					&& getEmotionState(S).difDistress(shrineCleansed.name ) > 0) ;
 
 		// Now, create an agent, attach the game to it, and give it the above goal:
 		agent.setGoal(G);

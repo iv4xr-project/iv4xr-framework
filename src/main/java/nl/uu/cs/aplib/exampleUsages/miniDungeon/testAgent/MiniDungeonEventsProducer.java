@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import eu.iv4xr.framework.extensions.occ.Event;
+import eu.iv4xr.framework.extensions.occ.XEvent;
 import eu.iv4xr.framework.mainConcepts.SyntheticEventsProducer;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import nl.uu.cs.aplib.exampleUsages.miniDungeon.Entity.ShrineType;
@@ -99,15 +100,6 @@ public class MiniDungeonEventsProducer extends SyntheticEventsProducer {
 			event = new Message("wom.agentId",0,MsgCastType.BROADCAST,"*",HEAL) ;
 			currentEvents.add(event) ;
 		}	
-	}
-	
-	public static MiniDungeonOCCEvent translateAplibMsgToOCCEvent(Message m) {
-		if (m.getMsgName().equals(CLEANSE)) {
-			return new MiniDungeonOCCEvent(m.getMsgName(), m.getIdTarget()) ;
-		}
-		else {
-			return new MiniDungeonOCCEvent(m.getMsgName()) ;
-		}
 	}
 
 }

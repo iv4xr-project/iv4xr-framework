@@ -32,13 +32,8 @@ import nl.uu.cs.aplib.multiAgentSupport.Message;
  */
 public class OCCState implements IEmotionState {
 	
-	public EmotiveTestAgent testAgent ;
-	public EmotionAppraisalSystem eas ;
-	public Set<String> goalNames = new HashSet<>() ;
-	
+	public Iv4xrOCCEngine occEngine ;	
 	public List<IEmotion> previousEmotions ;
-	
-	public Function<Message,Event> eventTranslator = null ;
 	
 	/**
 	 * Representing time. For now it just counts how many times the {@link updateEmotion}
@@ -46,15 +41,8 @@ public class OCCState implements IEmotionState {
 	 */
 	public int time = 0 ;
 	
-	public OCCState(EmotiveTestAgent agent, EmotionAppraisalSystem eas) {
-		testAgent = agent ;
-		this.eas = eas ;
-		goalNames.addAll(eas.beliefbase.getGoalsStatus().statuses.keySet()) ;
-	}
-	
-	public OCCState setEventTranslator(Function<Message,Event> translator) {
-		eventTranslator = translator ;
-		return this ;
+	public OCCState(Iv4xrOCCEngine occEngine) {
+		this.occEngine = occEngine ;
 	}
 	
 	private EmotionType[] emotionTypes = {
@@ -69,9 +57,10 @@ public class OCCState implements IEmotionState {
 	@Override
 	public List<IEmotion> getCurrentEmotion() {	
 		List<IEmotion> emotions = new LinkedList<>() ;	
+		Set<String> goalNames = occEngine.beliefbase.getGoalsStatus().statuses.keySet()  ;
 		for(String gname : goalNames) {
 			for (var ety : emotionTypes) {
-				Emotion e = eas.getEmotion(gname,ety) ;
+				Emotion e = occEngine.getEmotion(gname,ety) ;
 				if(e != null) {
 					e = e.shallowClone() ;
 					emotions.add(new OCCEmotion(gname,e)) ;
@@ -81,7 +70,7 @@ public class OCCState implements IEmotionState {
 		}
 		return emotions ;
 	}
-	
+
 	/**
 	 * Search the current list of emotions for the emotion for the given emotion-type,
 	 * with respect to a given goal. If the emotion exists, its intensity is returned,
@@ -217,12 +206,12 @@ public class OCCState implements IEmotionState {
 	@Override
 	public void updateEmotion(EmotiveTestAgent agent) {
 		previousEmotions = getCurrentEmotion() ;
-		var events = testAgent.getSyntheticEventsProducer().getCurrentEvents() ;
+		var events = agent.getSyntheticEventsProducer().getCurrentEvents() ;
 		for(Message m : events) {
-			Event e = eventTranslator.apply(m) ;
-			eas.update(e,time);
+			XEvent e = new XEvent(m) ;
+			occEngine.update(e,time);
 		}
-		testAgent.getSyntheticEventsProducer().currentEvents.clear();
+		agent.getSyntheticEventsProducer().currentEvents.clear();
 		time++ ;
 	}
 
