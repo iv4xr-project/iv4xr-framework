@@ -8,7 +8,11 @@ import eu.iv4xr.framework.extensions.occ.Emotion.EmotionType;
 import eu.iv4xr.framework.mainConcepts.EmotiveTestAgent;
 import eu.iv4xr.framework.mainConcepts.IEmotion;
 import eu.iv4xr.framework.mainConcepts.IEmotionState;
+import eu.iv4xr.framework.mainConcepts.Iv4xrAgentState;
+import eu.iv4xr.framework.spatial.Vec3;
+import nl.uu.cs.aplib.mainConcepts.SimpleState;
 import nl.uu.cs.aplib.multiAgentSupport.Message;
+import nl.uu.cs.aplib.utils.Pair;
 
 /**
  * An implementation of IEmotionState, representing the current emotional
@@ -36,15 +40,23 @@ public class OCCState implements IEmotionState {
 	public List<IEmotion> previousEmotions ;
 	
 	/**
+	 * If set to true then we will keep the emotion-history too. That is, each
+	 * emotion-state that results from {@link #updateEmotion(EmotiveTestAgent)} will
+	 * be added into this history. Along to this history, the agent location is also
+	 * added (so, this only works if the agent keeps track of its location; more
+	 * specifically if the agent's state in an instance of
+	 * {@link eu.iv4xr.framework.mainConcepts.Iv4xrAgentState}).
+	 * 
+	 * <p>The default: this flag is true.
+	 */
+	public boolean keepHistory = true ;
+	
+	/**
 	 * Representing time. For now it just counts how many times the {@link updateEmotion}
 	 * method has been called.
 	 */
 	public int time = 0 ;
-	
-	public OCCState(Iv4xrOCCEngine occEngine) {
-		this.occEngine = occEngine ;
-	}
-	
+		
 	private EmotionType[] emotionTypes = {
 		EmotionType.Hope,
 		EmotionType.Joy,
@@ -53,6 +65,18 @@ public class OCCState implements IEmotionState {
 		EmotionType.Distress,
 		EmotionType.Disappointment
 	} ;
+	
+	/**
+	 * A full history of the emotion state, along with the agent location.
+	 * Is only tracked if the flag {@link #keepHistory} is set to true
+	 * (default). See also the doc in {@link #keepHistory}.
+	 */
+	public List<Pair<Vec3,List<IEmotion>>> history ;
+	
+	public OCCState(Iv4xrOCCEngine occEngine) {
+		this.occEngine = occEngine ;
+		history = new LinkedList<>() ;
+	}
 
 	@Override
 	public List<IEmotion> getCurrentEmotion() {	
@@ -202,15 +226,80 @@ public class OCCState implements IEmotionState {
 	public Float difDisappointment(String goal) {
 		return getGoalBasedEmotionDeltaIntensity(goal,EmotionType.Disappointment) ;
 	}
+	
+	List<Vec3> locsWhereEmotionAtLeast(String goal, float c, EmotionType ety) {
+		return history.stream()
+		    .filter(entry -> getGoalBasedEmotionIntensity(entry.snd,goal,ety) >= c)
+		    .map(entry -> entry.fst)
+		    .collect(Collectors.toList()) ;		
+	}
+	
+	/**
+	 * Return the history-so-far of agent-locations where the hope towards
+	 * achieving the given goal is at least some c.
+	 */
+	public List<Vec3> locsHopeAtLeast(String goal, float c) {
+		return locsWhereEmotionAtLeast(goal,c,EmotionType.Hope) ;
+	}
+
+	/**
+	 * Return the history-so-far of agent-locations where the joy towards
+	 * achieving the given goal is at least some c.
+	 */
+	public List<Vec3> locsJoyAtLeast(String goal, float c) {
+		return locsWhereEmotionAtLeast(goal,c,EmotionType.Joy) ;
+	}
+	
+	/**
+	 * Return the history-so-far of agent-locations where the satisfaction towards
+	 * achieving the given goal is at least some c.
+	 */
+	public List<Vec3> locsSatisfactionAtLeast(String goal, float c) {
+		return locsWhereEmotionAtLeast(goal,c,EmotionType.Satisfaction) ;
+	}
+	
+	/**
+	 * Return the history-so-far of agent-locations where the fear towards
+	 * failing the given goal is at least some c.
+	 */
+	public List<Vec3> locsFearAtLeast(String goal, float c) {
+		return locsWhereEmotionAtLeast(goal,c,EmotionType.Fear) ;
+	}
+	
+	/**
+	 * Return the history-so-far of agent-locations where the distress towards
+	 * failing the given goal is at least some c.
+	 */
+	public List<Vec3> locsDistressAtLeast(String goal, float c) {
+		return locsWhereEmotionAtLeast(goal,c,EmotionType.Distress) ;
+	}
+	
+	/**
+	 * Return the history-so-far of agent-locations where the disappointment towards
+	 * failing the given goal is at least some c.
+	 */
+	public List<Vec3> locsDisappointmentAtLeast(String goal, float c) {
+		return locsWhereEmotionAtLeast(goal,c,EmotionType.Disappointment) ;
+	}
 
 	@Override
 	public void updateEmotion(EmotiveTestAgent agent) {
 		previousEmotions = getCurrentEmotion() ;
+		// add the current emotion to the history, if this feature is turned-on:
+		SimpleState state = agent.state() ;
+		if (keepHistory && state instanceof Iv4xrAgentState) {
+			Vec3 agentLocation = ((Iv4xrAgentState) state).worldmodel.position ;
+			if (agentLocation != null) {
+				history.add(new Pair<Vec3,List<IEmotion>>(agentLocation,previousEmotions)) ;
+			}	
+		}
+		// interpret incoming events to update the emotion state:
 		var events = agent.getSyntheticEventsProducer().getCurrentEvents() ;
 		for(Message m : events) {
 			XEvent e = new XEvent(m) ;
 			occEngine.update(e,time);
 		}
+		// clear the events from the buffer:
 		agent.getSyntheticEventsProducer().currentEvents.clear();
 		time++ ;
 	}
