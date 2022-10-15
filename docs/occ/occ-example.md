@@ -52,6 +52,9 @@ Goal shrineCleansed = new Goal("A shrine is cleansed.")
      . withSignificance(8) ;
 ```
 
+Later we will register this goal to JOCC.
+For JOCC a goal is just a string and some number representing its relative importance compared to other goals. Since in this example we will only have one goal, this number is not important.
+
 In JOCC, a player-model, also called a _player characterization_, is a class that implements the abstract class `XUserCharacterization`. We show below the methods that need to be implemented:
 
 ```java
@@ -73,7 +76,7 @@ public class MiniDungeonPlayerCharacterization extends XUserCharacterization {
 
   * `eventEffect(e,B)` descrives how the event e would affect the player's (that is, the player that we are modelling) perception on the likelihood on achieving different goals. B is a model of what the player's currently believe (e.g. it might believe that achieving a goal g is still possible).
 
-As an example the [full code of MiniDungeonPlayerCharacterization can be seen here](../src/main/java/nl/uu/cs/aplib/exampleUsages/miniDungeon/testAgent/MiniDungeonPlayerCharacterization.java).
+For the work out, please see the [full code of MiniDungeonPlayerCharacterization can be seen here](../src/main/java/nl/uu/cs/aplib/exampleUsages/miniDungeon/testAgent/MiniDungeonPlayerCharacterization.java).
 
 #### 3. Putting things together
 
