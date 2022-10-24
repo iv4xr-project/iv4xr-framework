@@ -10,13 +10,13 @@ public class TestarExecutor {
 
 	public static void main(String[] args) throws IOException, ConfigException {
 		// TESTAR uses the windows.dll to use Windows native methods
-		FileUtils.copyFileToDirectory(new File("resources//windows10//windows.dll"), new File("."));
+		FileUtils.copyFileToDirectory(new File("resources//testar//windows10//windows.dll"), new File("."));
 
 		// TODO: The existence of the steam_appid.txt file allows the execution of the OpenCover tool. 
 		// But it is not invoking steam to launch SE with the iv4xr-plugin automatically
 
 		// Prepare the path that contains the TESTAR protocol to be executed
-		String settingsDir = "." + File.separator + "resources\\settings" + File.separator;
+		String settingsDir = "." + File.separator + "resources\\testar\\settings" + File.separator;
 
 		// Lab Recruits protocol example
 		//String protocolName = "labrecruits_commands_testar_agent_navmesh_explorer";
