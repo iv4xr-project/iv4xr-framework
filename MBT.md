@@ -1,11 +1,11 @@
 # Model-based testing
 
 ## Use Case
-Tool [iv4xr-mbt](https://github.com/iv4xr-project/iv4xr-mbt) combines model-based approach and search-based testing for automated test generation for XR systems. The approach uses extended finite state machines (EFSMs) with which a tester can model the desired aspect of the game behavior. 
+Tool [EvoMBT](https://github.com/iv4xr-project/iv4xr-mbt) combines model-based approach and search-based testing for automated test generation for XR systems. The approach uses extended finite state machines (EFSMs) with which a tester can model the desired aspect of the game behavior. 
 
 The user of the iv4xr-framework that would like to adopt model-based approach to test generation should provide:
 
-- an [EFSM model](link) describing the testing scenario
+- an [EFSM model](https://github.com/iv4xr-project/iv4xr-mbt/blob/master/src/main/java/eu/fbk/iv4xr/mbt/efsm/EFSM.java) describing the testing scenario
 - a map from an abstract test (generated on the model) to a concrete test (a GoalStructure)
 
 
@@ -21,7 +21,7 @@ An EFSM is made by 3 different components:
 
 An abstract test case is a list of transitions of the EFMS model that represents the sequence of actions an agent has to complete to accomplish the testing task.
 
-[API for EFSM creation](link)
+[API for EFSM creation](https://github.com/iv4xr-project/iv4xr-mbt/wiki/DeveloperGuide)
 
 ### From abstract to concrete test cases
 An EFSM transition is the equivalent of an action performed by an agent in the SUT. For each transition, the user of the framework should proved a map to a GoalStructure.
@@ -56,16 +56,23 @@ A possible use case of iv4xr-mbt follows:
 
 ```
 
-### Lab Recruits
+### EvoMBT wiki
 
-#### EFSM model
-
-#### From abstract to concrete test case
-
-
+[EvoMBT wiki](https://github.com/iv4xr-project/iv4xr-mbt/wiki) provides a complete guide for model-based testing, including support to [LabRecruits](https://github.com/iv4xr-project/iv4xr-mbt/wiki/LabRecruits) and a [developer guide](https://github.com/iv4xr-project/iv4xr-mbt/wiki/DeveloperGuide) to implement custom EFSM models.
 
 
 
 ## Papers
 
-* Ferdous, R., Kifetew, F., Prandi, D., Prasetya, I. S. W. B., Shirzadehhajimahmood, S., & Susi, A. (2021, October). *Search-Based Automated Play Testing of Computer Games: A Model-Based Approach.* In International Symposium on Search Based Software Engineering (pp. 56-71). Springer, Cham.
+<a id="1">[1]</a> 
+R. Ferdous, F. M. Kifetew, D. Prandi, I. S. W. B. Prasetya, S. Shirzadehhajimahmood, A. Susi.
+*Search-based automated play testing of computer games: A model-based approach.*
+13th International Symposium, SSBSE 2021. 
+[doi:10.1007/978-3-030-88106-1_5](https://link.springer.com/chapter/10.1007/978-3-030-88106-1_5). 
+
+<a id="2">[2]</a> 
+R. Ferdous, C. Hung, F. M. Kifetew, D. Prandi, A. Susi.
+*EvoMBT*.
+15th IEEE/ACM International Workshop on Search-Based Software Testing (tool competition), SBST@ICSE 2022.
+[doi:10.1145/3526072.3527534](https://ieeexplore.ieee.org/document/9810734).
+
