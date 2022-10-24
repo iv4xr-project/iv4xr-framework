@@ -1,8 +1,12 @@
 # iv4xr-framework
 
+(TODO: below are just tmp-txt.)
+
 Iv4xr Framework is an agent-based framework for automated testing highly interactive systems such as computer games or computer simulators. Our own use case is to use the framework for automated testing of Extended Reality (XR) systems. Within this use case, the Framework has been piloted for testing 3D games; interfacing to other types of XR systems is work in progress. Outside these use cases, iv4XR is generic enough to target other types of interactive systems, even services or Java classes as long as these entities can be viewed as interactable systems.
 
 #### Features
+
+(TODO: below are just tmp-txt)
 
   * Create a testing-task by expressing is as a goal and giving it to a test agent to be accomplished. Complex testing tasks (e.g. hierarchical and involving conditions) can be expressed using **Goal-combinators**.
 
@@ -22,7 +26,7 @@ Iv4xr Framework is an agent-based framework for automated testing highly interac
   * Integration with **Reinforcement Learning** libraries for training agents.    
   * In addition to usual assertions/invariants, **LTL and Bounded LTL** can be used for expressing temporal properties that can be checked during testing.
 
-#### How to build
+### How to build
 
 (Batman Pacman Maman)
 
@@ -31,37 +35,59 @@ Iv4xr Framework is an agent-based framework for automated testing highly interac
 
 #### Agent-based testing
 
-   * [Topic 1](link)
-   * [Topic 2](link)
-   * [etc](link)
-   * [note for me: dont forget to mention data collection](link)
-   * [APIs reference](link)
+(TODO: UU, add link to docs on this topic)
+
+(TODO: add link to APIs reference)
+
+
 
 #### Emotive testing
 
-   * [Topic 1](link)
-   * [Topic 2](link)
-   * [etc](link)
-   * [APIs reference](link)
+(TODO: UU, INESC add link to docs on this topic)
+
+(TODO: add link to APIs reference)
+
+
 
 #### Automated explorative testing
 
-* [Topic 1](link)
-* [Topic 2](link)
-* [etc](link)
-* [APIs reference](link)
+(TODO: UPV add link to docs on this topic)
+
+(TODO: add link to APIs reference)
+
+
 
 #### Model-based testing
 
-* [Topic 1](link)
-* [Topic 2](link)
-* [etc](link)
-* [APIs reference](link)
+(TODO: FBK add link to docs on this topic)
 
-#### Training test agents
+(TODO: add link to APIs reference)
 
+
+
+#### Reinforcement learning
+
+(TODO: Thales,FBK,UU add link to docs on this topic)
+
+(TODO: add link to APIs reference)
+
+
+
+#### Case studies
+
+(TODO: GoodAI,Thales,GW,all add links to your case studies, papers here)
+
+### License
+
+### Credits
+
+(TODO: add our names here?)
+
+(TODO: credit EU)
 
 ### Papers
+
+(TODO: all -> add your papers here)
 
   * Extended abstract: [_Aplib: An Agent Programming Library for Testing Games_](http://ifaamas.org/Proceedings/aamas2020/pdfs/p1972.pdf), I. S. W. B. Prasetya,  Mehdi Dastani, in the International Conference on Autonomous Agents and Multiagent Systems (AAMAS), 2020.
 
