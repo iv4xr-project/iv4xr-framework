@@ -36,6 +36,12 @@ public class TestarFactory implements ITestFactory {
 	}
 
 	@Override
+	public GoalStructure nextGoal() {
+		// TESTAR agent does not implement this method functionality
+		return null;
+	}
+
+	@Override
 	public GoalStructure execute(GoalStructure G, boolean reset) {
 		// Execute TESTAR based on the desired settings + protocol
 		protocol.run(settings);
