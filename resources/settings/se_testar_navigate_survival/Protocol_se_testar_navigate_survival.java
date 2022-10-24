@@ -1,7 +1,7 @@
 /***************************************************************************************************
  *
- * Copyright (c) 2020 - 2022 Universitat Politecnica de Valencia - www.upv.es
- * Copyright (c) 2020 - 2022 Open Universiteit - www.ou.nl
+ * Copyright (c) 2021 - 2022 Universitat Politecnica de Valencia - www.upv.es
+ * Copyright (c) 2021 - 2022 Open Universiteit - www.ou.nl
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,7 +35,7 @@ import org.fruit.alayer.*;
 import org.fruit.alayer.exceptions.ActionFailedException;
 import org.fruit.monkey.ConfigTags;
 import org.testar.iv4xr.SpatialXMLmap;
-import org.fruit.monkey.RuntimeControlsProtocol.Modes;
+import org.testar.iv4xr.InteractiveSelectorSE;
 import org.testar.protocols.iv4xr.SEProtocol;
 
 import eu.iv4xr.framework.spatial.Vec3;
@@ -45,7 +45,6 @@ import eu.testar.iv4xr.enums.IV4XRtags;
 import eu.testar.iv4xr.enums.SVec3;
 import nl.ou.testar.RandomActionSelector;
 import spaceEngineers.model.Vec3F;
-import spaceEngineers.transport.CloseIfCloseableKt;
 
 /**
  * iv4xr EU H2020 project - SpaceEngineers Use Case
@@ -64,7 +63,7 @@ import spaceEngineers.transport.CloseIfCloseableKt;
  * State (Widget-Tree) -> Agent Observation (All Observed Entities)
  * Action              -> SpaceEngineers low level command
  */
-public class Protocol_se_testar_navigate extends SEProtocol {
+public class Protocol_se_testar_navigate_survival extends SEProtocol {
 
 	/*
 	 * Modify agent ObservationRadius in the file: 
@@ -74,21 +73,25 @@ public class Protocol_se_testar_navigate extends SEProtocol {
 	private static Set<String> toolEntities;
 	static {
 		toolEntities = new HashSet<String>();
+		//toolEntities.add("LargeBlockSmallGenerator");
 		toolEntities.add("LargeBlockBatteryBlock");
 		toolEntities.add("SurvivalKitLarge");
 	}
 
-	private static Set<String> interactiveEntities;
+	private static Set<String> interactiveEnergyEntities;
 	static {
-		interactiveEntities = new HashSet<String>();
-		interactiveEntities.add("Ladder2");
-		interactiveEntities.add("LargeBlockCockpit");
-		interactiveEntities.add("CockpitOpen");
-		interactiveEntities.add("LargeBlockCryoChamber");
+		interactiveEnergyEntities = new HashSet<String>();
+		interactiveEnergyEntities.add("LargeBlockCockpit");
+		interactiveEnergyEntities.add("LargeBlockCockpitSeat");
+		interactiveEnergyEntities.add("CockpitOpen");
+		interactiveEnergyEntities.add("LargeBlockCryoChamber");
 	}
+
+	private InteractiveSelectorSE actionSelectorSE = new InteractiveSelectorSE();
 
 	// Oracle example to validate that the block integrity decreases after a Grinder action
 	private Verdict functional_verdict = Verdict.OK;
+
 
 	/**
 	 * This methods is called before each test sequence, allowing for example using external profiling software on the SUT
@@ -99,7 +102,7 @@ public class Protocol_se_testar_navigate extends SEProtocol {
 
 		// TODO: Improve and obtain automatically from test settings
 		// Create a XML spatial map based on the desired SpaceEngineers level
-		SpatialXMLmap.prepareSpatialXMLmap("suts/se_levels/manual-world");
+		SpatialXMLmap.prepareSpatialXMLmap("suts/se_levels/manual-world-survival");
 	}
 
 	/**
@@ -118,6 +121,15 @@ public class Protocol_se_testar_navigate extends SEProtocol {
 		SpatialXMLmap.updateAgentObservation(state);
 
 		return state;
+	}
+
+	/**
+	 * This method is invoked each time the TESTAR starts the SUT to generate a new sequence.
+	 */
+	@Override
+	protected void beginSequence(SUT system, State state) {
+		super.beginSequence(system, state);
+		actionSelectorSE = new InteractiveSelectorSE();
 	}
 
 	/**
@@ -149,15 +161,32 @@ public class Protocol_se_testar_navigate extends SEProtocol {
 			// We consider this OK by default, but more sophisticated oracles can be applied here
 		}
 
-		// Apply an Oracle to check jet-pack settings
-		if(lastExecutedAction != null && lastExecutedAction instanceof seActionNavigateInteract) {
-			Widget previousAgent = getAgentEntityFromState(latestState);
-			Widget currentAgent = getAgentEntityFromState(state);
-
-			if(!previousAgent.get(IV4XRtags.seAgentJetpackRunning).equals(currentAgent.get(IV4XRtags.seAgentJetpackRunning))) {
-				Widget interactedBlock = ((seActionNavigateInteract)lastExecutedAction).get(Tags.OriginWidget);
-				functional_verdict = new Verdict(Verdict.JETPACK_SETTINGS_ERROR, "Jetpack settings are incorrect after interacting with block : " + interactedBlock.get(IV4XRtags.entityType));
+		// Apply an Oracle to check if shooting action worked properly
+		if(lastExecutedAction != null && lastExecutedAction instanceof seActionNavigateShootBlock) {
+			// Check the block attached to the previous executed shooting action
+			Widget previousBlock = ((seActionNavigateShootBlock)lastExecutedAction).get(Tags.OriginWidget);
+			Float previousIntegrity = previousBlock.get(IV4XRtags.seIntegrity);
+			System.out.println("Previous Block Integrity: " + previousIntegrity);
+			// Try to find the same block in the current state using the block id
+			for(Widget w : state) {
+				if(w.get(IV4XRtags.entityId).equals(previousBlock.get(IV4XRtags.entityId))) {
+					Float currentIntegrity = w.get(IV4XRtags.seIntegrity);
+					System.out.println("Current Block Integrity: " + currentIntegrity);
+					// If previous integrity is the same or increased, something went wrong
+					if(currentIntegrity >= previousIntegrity) {
+						String blockType = w.get(IV4XRtags.entityType);
+						functional_verdict = new Verdict(Verdict.BLOCK_INTEGRITY_ERROR, "The integrity of interacted block " + blockType + " didn't decrease after a shooting action");
+					}
+				}
 			}
+			// If the previous block does not exist in the current state, it has been destroyed after the shooting action
+			// We consider this OK by default, but more sophisticated oracles can be applied here
+		}
+
+		// Goal Actions have an oracle associated
+		// Here we check the agent properties (energy, health, oxygen, hydrogen, jetpack) and triggeredBlockConstruction oracles
+		if(lastExecutedAction != null && lastExecutedAction instanceof seActionGoal) {
+			functional_verdict = ((seActionGoal)lastExecutedAction).getActionVerdict();
 		}
 
 		return super.getVerdict(state).join(functional_verdict);
@@ -173,14 +202,37 @@ public class Protocol_se_testar_navigate extends SEProtocol {
 		// For each block widget (see movementEntities types), rotate and move until the agent is close to the position of the block
 		for(Widget w : state) {
 			if(toolEntities.contains(w.get(IV4XRtags.entityType)) && seReachablePositionHelper.calculateIfEntityReachable(system, w)) {
-				labActions.add(new seActionNavigateGrinderBlock(w, system, agentId, 4, 1.0));
-				labActions.add(new seActionNavigateWelderBlock(w, system, agentId, 4, 1.0));
+				// Always Grinder and shoot by default
+				labActions.add(new seActionNavigateGrinderBlock(w, system, agentId, 1, 1.0));
+				labActions.add(new seActionNavigateShootBlock(w, system, agentId));
+				// But only welder if the integrity is not the maximum
+				if(w.get(IV4XRtags.seIntegrity) < w.get(IV4XRtags.seMaxIntegrity)) {
+					labActions.add(new seActionNavigateWelderBlock(w, system, agentId, 1, 1.0));
+				}
 			}
 
-			if((interactiveEntities.contains(w.get(IV4XRtags.entityType)) || w.get(IV4XRtags.seDefinitionId, "").contains("Ladder2"))
-					&& seReachablePositionHelper.calculateIfEntityReachable(system, w)) {
+			// FIXME: Fix Ladder2 is not observed as entityType
+			if(w.get(IV4XRtags.seDefinitionId, "").contains("Ladder2") && seReachablePositionHelper.calculateIfEntityReachable(system, w)) {
 				labActions.add(new seActionNavigateInteract(w, system, agentId));
 			}
+
+			// Some interactive entities allow the agent to rest inside and charge the energy
+			if(interactiveEnergyEntities.contains(w.get(IV4XRtags.entityType)) && seReachablePositionHelper.calculateIfEntityReachable(system, w)) {
+				labActions.add(new seActionNavigateRechargeEnergy(w, system, agentId));
+			}
+
+			// If a Medical Room exists in the level, the agent can use the panel to charge the health and energy
+			// FIXME: Navigate near to medical room is not completely functional yet
+			if(w.get(IV4XRtags.entityType, "").contains("MedicalRoom") && seReachablePositionHelper.calculateIfEntityReachable(system, w)) {
+				labActions.add(new seActionNavigateRechargeHealth(w, system, agentId));
+			}
+		}
+
+		// If the agent has a reachable position in front of him, trigger a place block action
+		Vec3 agentPosition = SVec3.seToLab(state.get(IV4XRtags.agentWidget).get(IV4XRtags.seAgentPosition));
+		Vec3 frontPosition = new Vec3((agentPosition.x - 2.5f), agentPosition.y, agentPosition.z);
+		if(seReachablePositionHelper.calculateIfPositionIsReachable(system, frontPosition)) {
+			labActions.add(new seActionTriggerBlockConstruction(state, system, agentId, "LargeHeavyBlockArmorBlock"));
 		}
 
 		// Now add the set of actions to explore level positions
@@ -211,12 +263,16 @@ public class Protocol_se_testar_navigate extends SEProtocol {
 		//Call the preSelectAction method from the AbstractProtocol so that, if necessary,
 		//unwanted processes are killed and SUT is put into foreground.
 		Action retAction = preSelectAction(state, actions);
-		if (retAction== null) {
+		if (retAction == null) {
 			//if no preSelected actions are needed, then implement your own action selection strategy
 			//using the action selector of the state model:
 			retAction = stateModelManager.getAbstractActionToExecute(actions);
 		}
-		if(retAction==null) {
+		if(retAction == null) {
+			// Invoke the SE action selector to prioritize interactive actions
+			retAction = actionSelectorSE.prioritizedAction(state, actions);
+		}
+		if(retAction == null) {
 			System.out.println("State model based action selection did not find an action. Using default action selection.");
 			// if state model fails, use default:
 			retAction = RandomActionSelector.selectAction(actions);
@@ -242,9 +298,11 @@ public class Protocol_se_testar_navigate extends SEProtocol {
 
 			SpatialXMLmap.updateInteractedBlock(action);
 
+			actionSelectorSE.addExecutedAction(action);
+
 			return true;
 
-		}catch(ActionFailedException afe){
+		} catch(ActionFailedException afe){
 			return false;
 		}
 	}

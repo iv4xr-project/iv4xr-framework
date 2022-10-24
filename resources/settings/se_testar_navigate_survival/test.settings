@@ -23,7 +23,7 @@ Mode = Generate
 # The SUT must be manually started and closed.
 #################################################################
 SUTConnector = COMMAND_LINE
-SUTConnectorValue = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\SpaceEngineers\\Bin64\\SpaceEngineers.exe" "suts/se_levels/manual-world"
+SUTConnectorValue = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\SpaceEngineers\\Bin64\\SpaceEngineers.exe" "suts/se_levels/manual-world-survival"
 
 #################################################################
 # Sequences
@@ -32,7 +32,7 @@ SUTConnectorValue = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\SpaceEng
 #################################################################
 
 Sequences = 1
-SequenceLength = 5
+SequenceLength = 10
 
 #################################################################
 # Oracles based on suspicious titles
@@ -67,6 +67,7 @@ SuspiciousProcessOutput = .*[eE]rror.*|.*[eE]xcep[ct]i[o?]n.*
 # process.
 #################################################################
 
+ProcessLogsEnabled = true
 ProcessLogs = .*[eE]rror.*|.*[eE]xcep[ct]i[o?]n.*
 
 #################################################################
@@ -93,11 +94,11 @@ SUTProcesses =
 # Indicate the location of the protocol class for your specific SUT.
 #################################################################
 
-ProtocolClass = se_testar_navigate/Protocol_se_testar_navigate
+ProtocolClass = se_testar_navigate_survival/Protocol_se_testar_navigate_survival
 
-#################################################################\n"
+#################################################################
 # State model inference settings
-#################################################################\n"
+#################################################################
 StateModelEnabled = false
 DataStore = OrientDB
 DataStoreType = remote

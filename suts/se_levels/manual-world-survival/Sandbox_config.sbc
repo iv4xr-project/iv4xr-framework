@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <MyObjectBuilder_WorldConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Settings xsi:type="MyObjectBuilder_SessionSettings">
-    <GameMode>Creative</GameMode>
+    <GameMode>Survival</GameMode>
     <InventorySizeMultiplier>3</InventorySizeMultiplier>
     <BlocksInventorySizeMultiplier>1</BlocksInventorySizeMultiplier>
     <AssemblerSpeedMultiplier>3</AssemblerSpeedMultiplier>
@@ -21,7 +21,7 @@
     <EnableRemoteBlockRemoval>true</EnableRemoteBlockRemoval>
     <EnvironmentHostility>SAFE</EnvironmentHostility>
     <AutoHealing>true</AutoHealing>
-    <EnableCopyPaste>true</EnableCopyPaste>
+    <EnableCopyPaste>false</EnableCopyPaste>
     <WeaponsEnabled>true</WeaponsEnabled>
     <ShowPlayerNamesOnHud>true</ShowPlayerNamesOnHud>
     <ThrusterDamage>true</ThrusterDamage>
@@ -52,7 +52,7 @@
     <Enable3rdPersonView>true</Enable3rdPersonView>
     <EnableEncounters>true</EnableEncounters>
     <EnableConvertToStation>true</EnableConvertToStation>
-    <StationVoxelSupport>false</StationVoxelSupport>
+    <StationVoxelSupport>true</StationVoxelSupport>
     <EnableSunRotation>true</EnableSunRotation>
     <EnableRespawnShips>true</EnableRespawnShips>
     <ScenarioEditMode>false</ScenarioEditMode>
@@ -137,6 +137,6 @@
     <EnableTeamScoreCounters>true</EnableTeamScoreCounters>
   </Settings>
   <Mods />
-  <SessionName>Manual World</SessionName>
-  <LastSaveTime>2022-09-14T12:22:25.8999369+02:00</LastSaveTime>
+  <SessionName>Manual World Survival</SessionName>
+  <LastSaveTime>2022-10-24T08:56:23.9691408+02:00</LastSaveTime>
 </MyObjectBuilder_WorldConfiguration>

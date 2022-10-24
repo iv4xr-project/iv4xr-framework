@@ -13,7 +13,7 @@ We can indicate the desired TESTAR version in the pom.xml file :
     <dependency>
         <groupId>com.github.iv4xr-project</groupId>
         <artifactId>TESTAR_iv4xr</artifactId>
-        <version>v3.3b</version>
+        <version>v3.4</version>
     </dependency>
 ```
 
