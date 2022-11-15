@@ -25,5 +25,5 @@ index.log
 windows.dll
 suts/gym/windows/*
 # allow TESTAR dependency files
-!resources/testar/windows10/windows.dll
+!assets/testar/windows10/windows.dll
 !suts/gym/windows/ExtractLabRecruitsHere.txt

@@ -19,11 +19,11 @@ We can indicate the desired TESTAR version in the pom.xml file :
 
 ### windows.dll dependency
 TESTAR uses Windows Accessibility API to manage XR systems processes in Windows environments, take Windows systems screenshots, and create a Canvas with Spy mode to paint visual information.  
-Currently, this implementation is available by using the dynamic link library `resources/windows10/windows.dll`  
+Currently, this implementation is available by using the dynamic link library `assets/windows10/windows.dll`  
 
 ### TESTAR settings and java protocol
 TESTAR test.settings and java protocol define how the agent connects and interacts with the SUT.  
-These protocols are a set of directories inside `resources/settings` that contain a java protocol and a test.settings file, on which it is possible to add new directories to create additional protocols.  
+These protocols are a set of directories inside `assets/settings` that contain a java protocol and a test.settings file, on which it is possible to add new directories to create additional protocols.  
 
 ### LabRecruits SUT
 TESTAR needs to know where the XR system is located (indicated in the test.settings file).  
