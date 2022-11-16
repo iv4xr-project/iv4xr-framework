@@ -1,13 +1,13 @@
-# Exploratory testing
+# Exploratory Test Agent
 
 ## TESTAR tool
 TESTAR is a scriptless testing tool [TESTAR_iv4xr](https://github.com/iv4xr-project/TESTAR_iv4xr/wiki) that works as an exploratory agent in the iv4xr-framework.  
 
-TESTAR connects with the XR System Under Test (SUT), recognizes all virtual entities (in an observation range), derives possible actions to reach or interact with said entities, and automatically selects actions to explore the virtual environment.  
+TESTAR connects with the XR System Under Test (SUT), recognizes all virtual entities (in an observation range), derives the actions intended to reach or interact with these entities, and automatically selects actions to explore the virtual environment.  
 
-In each state, after executing an action in the XR systems, TESTAR applies a set of oracles to determine if the SUT contains an error. These oracles are customizable and can help to check that the SUT process runs properly without freezing, that the entities' properties are responding adequately to the executed actions, or that the state or log of the SUT does not contain suspicious errors such as `error` or `exception`.  
+In each state, after executing an action in the XR systems, TESTAR applies a set of oracles to determine if the SUT contains a failure. These oracles are customizable and can help to check that the SUT process runs properly without freezing, that the entities' properties are responding adequately to the executed actions, or that the state or log of the SUT does not contain suspicious messages such as `error` or `exception`.  
 
-![TESTAR_iv4xr_flow](./TESTAR_iv4xr_flow.png)
+![TESTAR_iv4xr_integration](./iv4xr_framework_testar_integration.png)
 
 ### Configuration
 [TESTAR Java protocols](https://github.com/iv4xr-project/TESTAR_iv4xr/wiki/TESTAR-Java-Protocols) allow users to define how the agent connects and interacts with the SUT. A default set of protocols in the directory `assets/testar/settings` contains the customizable java protocols and a test.settings files. It is also possible to add new directories with additional protocols.  
@@ -49,7 +49,7 @@ TESTAR uses its own action selection algorithm to explore and test XR systems. I
 
 ### TestarExecutor does
 - Prepares the `windows.dll` file  
-- Loads the desired TESTAR settings  
+- Loads the desired SUT protocol and settings 
 - Creates and executes the TESTAR exploratory agent  
 
 ### TestarFactory does
