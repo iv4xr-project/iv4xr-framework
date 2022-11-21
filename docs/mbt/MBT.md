@@ -27,7 +27,7 @@ An abstract test case is a list of transitions of the EFMS model that represents
 An EFSM transition is the equivalent of an action performed by an agent in the SUT. For each transition, the user of the framework should proved a map to a GoalStructure.
 
 ### Usage scenario
-The [iv4xr-framework](https://github.com/iv4xr-project/iv4xr-framework) is implemented in a dedicated branch [mbt-iv4xr-interface](https://github.com/iv4xr-project/iv4xr-mbt/tree/mbt-iv4xr-interface).
+The [iv4xr-framework](https://github.com/iv4xr-project/iv4xr-framework) is implemented in a folder [mbt](https://github.com/iv4xr-project/iv4xr-framework/tree/main/src/main/java/eu/iv4xr/framework/testfactory/mbt).
 
 A possible use case of iv4xr-mbt follows:
 
