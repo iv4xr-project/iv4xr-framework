@@ -92,13 +92,13 @@ You want to do automated testing using goal-based agents. In this setup, we use 
 
 You want to have an agent that randomly explores and interacts with a computer game, e.g. to test it against unexpecteds. We will make use of TESTAR as our explorative test agent.
 
-* [Documentation](./docs/TESTAR.md)
+* [Documentation](./docs/testar/TESTAR.md)
 
 #### Use case: model based testing.
 
 You want to do **model-based testing (MBT) on a computer game**. This needs a model, but on the other hand the benefit is that you can easily (and rapidly) generate test suites.
 
-* [Documentation](./docs/MBT.md)
+* [Documentation](./docs/mbt/MBT.md)
 
 #### Use case: player experience testing
 
