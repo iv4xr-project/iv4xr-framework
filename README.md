@@ -117,7 +117,7 @@ You want to use iv4xr agent(s) to train a Reinforcement Learning (RL) agent with
 
 * Thales-way: [Documentation]
 * FBK-way: [Documentation]
-* Light weight: [Japyre](https://github.com/iv4xr-project/japyre)
+* Light weight bridge (socket-based) allowing Python RL to target a Java-side Gym: [Japyre](https://github.com/iv4xr-project/japyre)
 
 #### Case studies
 
