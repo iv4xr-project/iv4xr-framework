@@ -31,57 +31,116 @@ _Iv4xr architecture_.
 
 ### How to build
 
-Just run `mvn compile` from the project root. This should download and build all the needed components.  
+Just run `mvn compile` from the project root. This should download and build all the Framework's components.  
 
-### How to use
+## Manuals
 
-This depends on your use case. E.g. you can use just iv4xr test agents to do your testing, but if we also want to do model based testing (MBT) then the MBT tool needs to be used (which in turn will drive iv4xr test agents). Regardless the use case, an interface to connect iv4xr to the SUT needs to be built first, along with a suitable goal-library that provides basic automation. This will require some effort, but it is a one-off investment, after which they can be used over and over again to provide intelligent automated testing on the SUT. How to build these two components will be described in the manuals below.
+The manuals consist of hyper-linked documents, grouped into several sections below.
 
-### Manuals
+### Section 1: Setup and Architecture
 
-1. _Use case_: you want to do **automated testing of a computer game using goal-based agents**. In this setup, we use a goal structure to formulate a single testing task, e.g. to verify that a certain scenario ends in a correct state. Such a task can be given to a test agent to be executed. You can  course have, or even generate, multiple tasks, and have then executed by the test agent/s. [Documentation].
+<a name="section1"></a>
 
-  _Require_: SUT-specific interface, SUT-specific goal-library.
+As mention before, as a framework iv4xr is not something we can use out of the box. We first need to construct several components to connect it to a given SUT, and to provide some basic automation, which latter at the higher level can be combined to deliver more powerful automation. The picture below shows the typical architecture for facilitating iv4xr use. The SUT is assumed to be a computer game; though in principle it can be any interactive system.
+Some of these components are SUT-specific, so it is not possible to provide them generically. Building these will require some effort; but it is a one-off investment, after which the built infrastructure can be reused over and over to do automated testing.
 
-1. Building your interface and goal-library. [Documentation].
+![testing architecture](./docs/testinggame_arch1.png)
 
-1. _Use case_: you want to have an agent that **randomly explores and interacts with a computer game**, e.g. to test it against unexpecteds. [Documentation]
+Along with a test agent, the following components are needed:
 
-  _Require_: SUT-specific interface, SUT-specific goal-library, TESTAR (included in the Framework).
+1. An implementation of the class `Iv4xrEnvironment`, responsible for handling the interaction with the system under test (SUT), such as sending a command to the SUT and to obtain observation of the SUT state.
 
-1. _Use case_: you want to do **model-based testing (MBT) on a computer game**. This needs a model, but on the other hand the benefit is that you can easily (and rapidly) generate test suites. [Documentation]
+1. A direct instance or an implementation of `Iv4xrAgentState` to hold the agent's state. Among other things, this state will hold a `WorldModel` as a generic representation of the SUT's gamestate.
 
-  _Require_: SUT-specific interface, SUT-specific goal-library, MBT component (included in the Framework).
+1. A `WorldModel` also contains one or more `WorldEntity`; each represent a gameobject in the SUT. WorldModel and WorldEntity are generic representations, regardless the SUT. We will thus need to build a translator, that translates actual gameobjects and gamestate to WorldEntity and WorldModel.
 
-1. _Use case_: you want to do **player experience (PX) testing** on a computer game. [Documentation] [Need help here, more use-cases??]
+1. To do something smart, such as automatically navigating to a destination, your agent will need a bunch of tactics and goals. These are game-specific, so you will also need to construct a library of these. Iv4xr supports you e.g. by providing pathfinding and exploration algorithms.
 
-1. _Use case_: you want to use reinforcement testing.
+More on this will be explain in a documentation in Section 2 below.
 
+### Section 2: Basic iv4xr
+<a name="section2"></a>
+
+This section introduces the basic concepts of agent programming and agent-based testing in iv4xr and provides tutorials and examples.
+
+* [iv4xr agent programming and tutorials](https://github.com/iv4xr-project/aplib/blob/master/docs/agentprogramming.md). This is the recommended starting point. The document introduces basic iv4xr agent concepts, such as tactic and goal. It also provides several tutorials.
+
+* The paper below provides more in-depth explanation of iv4xr agent concepts. It also explains agent's **execution model**. It should be noted that an agent executes quite differently than e.g. procedures or methods. This is explained in this [arxiv paper](https://arxiv.org/pdf/1911.04710).
+
+
+* **Agent-based testing** [manuals and tutorials](https://github.com/iv4xr-project/aplib/blob/master/docs/agentbasedtesting.md). The tutorials show how to use iv4xr agents to test computer games. We will start with a simple/artificial game, and then an example with a more realistic game will be given. This includes further workout of the implementation of the [architecture](#section1) from Section 1.
+
+* A summary of the Domain Specific Language (DSL)/APIs for constructing tactics and goals: [here](https://github.com/iv4xr-project/aplib/blob/master/docs/manual/DSL.md).
+
+* [iv4xr-core/aplib project](https://github.com/iv4xr-project/aplib): this is the project that contains iv4xr's Core; the one that provides test agents and their core capabilities. It also provides the underlying agent programming.
+
+
+### Section 3: Use Cases
+<a name="section3"></a>
+
+Iv4xr provides more than just basic test agents. The features include e.g. explorative testing and user/player experience testing. This section explains several typical use cases of iv4xr testing, making use its features.
+
+Regardless the use case, note that iv4xr always need an [interface for controlling and observing the SUT](#section1) and its related components, as explained in Section 1.
+
+#### Use case: pure agent-based testing.
+
+You want to do automated testing using goal-based agents. In this setup, we use a goal structure to formulate a single testing task/test scenario, e.g. to verify that the scenario ends in a correct state. Such a task can be given to a test agent to be executed. Using this scheme, multiple scenarios can automated (you can also think of a layer on top of this that would generate the scenarios). For this kind of use case you do not need anything extra.
+
+* Documentations: [see the manuals in Section 2](#section2)
+
+#### Use case: testing with an explorative agent.
+
+You want to have an agent that randomly explores and interacts with a computer game, e.g. to test it against unexpecteds. We will make use of TESTAR as our explorative test agent.
+
+* [Documentation](./docs/TESTAR.md)
+
+#### Use case: model based testing.
+
+You want to do **model-based testing (MBT) on a computer game**. This needs a model, but on the other hand the benefit is that you can easily (and rapidly) generate test suites.
+
+* [Documentation](./docs/MBT.md)
+
+#### Use case: player experience testing
+
+You want to do player experience (PX) testing on a computer game. There are several approaches that you can take, either one that is based on machine learning, or one that is model-based:
+
+* Using PAD approach (model free): [Documentation]
+* Using the OCC approach (model based): [Documentation](./docs/occ/occ-emotion.md)
+
+
+#### Use case: you want to use reinforcement testing.
+
+You want to use iv4xr agent(s) to train a Reinforcement Learning (RL) agent with the goal to train the RL agent to test the SUT. In this setup the iv4xr-agent just serves as a proxy between the RL-agent and the SUT. The RL agent is given a set of possible actions to try out as part of its learning. The iv4xr-agent is just used for executing actions chosen by the RL-agent. An action here can either be a primitive action or a whole goal-structure, depending on how you want to set it up.
+
+
+[TO DO, Thales, FBK]
+
+* Thales-way: [Documentation]
+* FBK-way: [Documentation]
+* Light weight: [Japyre](https://github.com/iv4xr-project/japyre)
 
 #### Case studies
 
 (TODO: GoodAI,Thales,GW,all add links to your case studies, papers here)
 
+* _Space Engineers_ is a complex 3D game made by Keen Software. Brief on how iv4xr is used. LINK-to-case-study-project
+* Nuclear plant simulator, brief on the case study and how iv4xr is used; LINK
+* LiveSite, brief on the case study and how iv4xr is used; LINK
+* _Lab Recruits_ is 3D maze-puzzle game. Iv4xr has been used to experiment with various forms of automated testing on this game. [Project and demo](https://github.com/iv4xr-project/iv4xrDemo).
+
 ### License
 
 
 
-### Papers
+### Papers [(full list here)](./docs/papers.md)
 
-(TODO: all -> add your papers here)
-
-  * Extended abstract: [_Aplib: An Agent Programming Library for Testing Games_](http://ifaamas.org/Proceedings/aamas2020/pdfs/p1972.pdf), I. S. W. B. Prasetya,  Mehdi Dastani, in the International Conference on Autonomous Agents and Multiagent Systems (AAMAS), 2020.
+(TODO: all -> add your main papers here, the rest in docs/papers.md)
 
   * Concepts behind agent-based automated testing:
-    [_Tactical Agents for Testing Computer Games_](https://emas2020.in.tu-clausthal.de/files/emas/papers-h/EMAS2020_paper_6.pdf)
-  I. S. W. B. Prasetya, Mehdi Dastani, Rui Prada, Tanja E. J. Vos, Frank Dignum, Fitsum Kifetew,
+    [_Aplib: Tactical Agents for Testing Computer Games_](https://link.springer.com/chapter/10.1007/978-3-030-66534-0_2) I. S. W. B. Prasetya, Mehdi Dastani, Rui Prada, Tanja E. J. Vos, Frank Dignum, Fitsum Kifetew,
   in Engineering Multi-Agent Systems workshop (EMAS), 2020.
 
-  * Paper-2
+  * R. Ferdous, F. M. Kifetew, D. Prandi, I. S. W. B. Prasetya, S. Shirzadehhajimahmood, A. Susi. _Search-based automated play testing of computer games: A model-based approach._
+  13th International Symposium, SSBSE 2021.
+  [doi:10.1007/978-3-030-88106-1_5](https://link.springer.com/chapter/10.1007/978-3-030-88106-1_5)
   * Paper-3 etc
-
-  ### Credits
-
-  (TODO: add our names here?)
-
-  (TODO: credit EU)
