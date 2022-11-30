@@ -7,10 +7,18 @@ import java.util.ArrayList;
 
 public class PythonCaller {
 	
+	public String python = "/anaconda3/bin/python3" ;
+	
+	public PythonCaller() { }
+	public PythonCaller(String python) { 
+		this.python = python ;
+	}
+	
 	//String command = "python /c start python /Users/stuff/Desktop/PAD_emotion_game/map_generator.py";
     //Process p = Runtime.getRuntime().exec(command);
 	public ArrayList<String> runPythonFile(String file_path) throws IOException, InterruptedException {
-	    String command = "/anaconda3/bin/python3 " + file_path;
+	    //String command = "/anaconda3/bin/python3 " + file_path;
+	    String command = python + " " + file_path;
 	    Process p = Runtime.getRuntime().exec(command);
 	    ArrayList<String> arr = new ArrayList<>();
 	    p.waitFor();
