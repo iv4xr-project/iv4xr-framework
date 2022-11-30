@@ -29,9 +29,26 @@ _Iv4xr architecture_.
 
   * **Reinforcement learning** **[what should we say here? :)]**
 
-### How to build
+### How to build and what are in this project
 
 Just run `mvn compile` from the project root. This should download and build all the Framework's components.  
+
+The project's main programming languages are Java and Python. The framework's components have been developed separately in their own  repositories, and this project packages them in a single project and provides a top-level hyperlinked documentation for the whole framework.
+Java components are automatically included as jar-files. Python components may have to be obtained from their repository; this will be indicated by their corresponding documentation-section in this project.
+
+Since this project integrates jars, you do not get the source code. To get the source code you need to go to their respective repository.
+If you need the source code, they can be obtained from the respective
+repository of the components; they should be linked from their respective documentation-section.
+For convenience, we list some below:
+
+* [The agent-based testing core component](https://github.com/iv4xr-project/aplib)
+* [Explorative testing TESTAR component](https://github.com/iv4xr-project/TESTAR_iv4xr)
+* [Model-based testing component](https://github.com/iv4xr-project/iv4xr-mbt)
+
+### Using the project
+
+You can either use this project as your base, and extend it. Or, you
+can import this project as a maven dependency.
 
 ## Manuals
 
