@@ -144,5 +144,10 @@
             <version>v3.4</version>
         </dependency>
        
+       <dependency>
+       		<groupId>com.github.iv4xr-project</groupId>
+     		<artifactId>iv4xr-rlbt</artifactId>
+     		<version>main-SNAPSHOT</version>
+       </dependency>
   </dependencies>
 </project>
