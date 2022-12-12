@@ -23,7 +23,7 @@ _Iv4xr architecture_.
 
   * **Affective testing**: simulating users' emotion, e.g. to facilitate automated user experience assessment. **[Pedro/Saba one paragraph here]**
 
-  *  **Automated explorative testing** with TESTAR. **[Fernando/Tanja one paragraph here]**
+  * **Automated explorative testing** with the TESTAR agent that automatically executes non-sequential actions to navigate, interact and test that the System Under Test (SUT) and the functional aspects of the virtual entities are robust enough to respond to different user interactions. This agent automatically creates visual reports for end users and can infer a State Model that maps the information regarding the observed states and executed actions.
 
   * **Model based testing**: this allows good quality test suites to be rapidly generated using state of the art search-based testing algorithms **[FBK modify/add]**.
 
@@ -107,7 +107,7 @@ You want to do automated testing using goal-based agents. In this setup, we use 
 
 #### Use case: testing with an explorative agent.
 
-You want to have an agent that randomly explores and interacts with a computer game, e.g. to test it against unexpecteds. We will make use of TESTAR as our explorative test agent.
+You want to have an agent that does not follow specific instructions, such as a set of tactics and goals or crafted models to test specific paths and interactions, but that automatically executes non-sequential actions to test that the computer game system and its entity's functional aspects are robust enough to respond to different and unexpected user interactions. You need to configure and use the TESTAR protocols to act as our explorative test agent.
 
 * [Documentation](./docs/testar/TESTAR.md)
 
@@ -160,4 +160,7 @@ You want to use iv4xr agent(s) to train a Reinforcement Learning (RL) agent with
   * R. Ferdous, F. M. Kifetew, D. Prandi, I. S. W. B. Prasetya, S. Shirzadehhajimahmood, A. Susi. _Search-based automated play testing of computer games: A model-based approach._
   13th International Symposium, SSBSE 2021.
   [doi:10.1007/978-3-030-88106-1_5](https://link.springer.com/chapter/10.1007/978-3-030-88106-1_5)
-  * Paper-3 etc
+  
+  * Vos, T. E., Aho, P., Pastor Ricos, F., Rodriguez Valdes, O., & Mulders, A. (2021). *testar–scriptless testing through graphical user interface.* Software Testing, Verification and Reliability, 31(3), e1771. [doi.org/10.1002/stvr.1771](https://doi.org/10.1002/stvr.1771)  
+  
+  * Paper-4 etc

@@ -58,10 +58,16 @@ TESTAR uses its own action selection algorithm to explore and test XR systems. I
 
 ## Papers
 
-* Vos, T. E., Aho, P., Pastor Ricos, F., Rodriguez Valdes, O., & Mulders, A. (2021). *testar–scriptless testing through graphical user interface.* Software Testing, Verification and Reliability, 31(3), e1771. [doi.org/10.1002/stvr.1771](https://doi.org/10.1002/stvr.1771)  
+* I. S. W. B. Prasetya, Fernando Pastor Ricós, Fitsum Meshesha Kifetew, Davide Prandi, Samira Shirzadehhajimahmood, Tanja E. J. Vos, Premysl Paska, Karel Hovorka, Raihana Ferdous, Angelo Susi, and Joseph Davidson. 2022. An agent-based approach to automated game testing: an experience report. In Proceedings of the 13th International Workshop on Automating Test Case Design, Selection and Evaluation (A-TEST 2022). Association for Computing Machinery, New York, NY, USA, 1–8. [doi.org/10.1145/3548659.3561305](https://doi.org/10.1145/3548659.3561305)  
 
 * Pastor Ricós, F. (2022). *Scriptless Testing for Extended Reality Systems.* In International Conference on Research Challenges in Information Science (pp. 786-794). Springer, Cham. [doi.org/10.1007/978-3-031-05760-1_56 ](https://doi.org/10.1007/978-3-031-05760-1_56)  
 
 * Mulders, A., Valdes, O.R., Ricós, F.P., Aho, P., Marín, B., Vos, T.E.J. (2022). State Model Inference Through the GUI Using Run-Time Test Generation. In: Guizzardi, R., Ralyté, J., Franch, X. (eds) Research Challenges in Information Science. RCIS 2022. Lecture Notes in Business Information Processing, vol 446. Springer, Cham. [doi.org/10.1007/978-3-031-05760-1_32](https://doi.org/10.1007/978-3-031-05760-1_32)  
 
-* I. S. W. B. Prasetya, Fernando Pastor Ricós, Fitsum Meshesha Kifetew, Davide Prandi, Samira Shirzadehhajimahmood, Tanja E. J. Vos, Premysl Paska, Karel Hovorka, Raihana Ferdous, Angelo Susi, and Joseph Davidson. 2022. An agent-based approach to automated game testing: an experience report. In Proceedings of the 13th International Workshop on Automating Test Case Design, Selection and Evaluation (A-TEST 2022). Association for Computing Machinery, New York, NY, USA, 1–8. [doi.org/10.1145/3548659.3561305](https://doi.org/10.1145/3548659.3561305)  
+* Vos, T. E., Aho, P., Pastor Ricos, F., Rodriguez Valdes, O., & Mulders, A. (2021). *testar–scriptless testing through graphical user interface.* Software Testing, Verification and Reliability, 31(3), e1771. [doi.org/10.1002/stvr.1771](https://doi.org/10.1002/stvr.1771)  
+
+* Rodríguez-Valdés, O., Vos, T.E.J., Aho, P., Marín, B. (2021). 30 Years of Automated GUI Testing: A Bibliometric Analysis. In: Paiva, A.C.R., Cavalli, A.R., Ventura Martins, P., Pérez-Castillo, R. (eds) Quality of Information and Communications Technology. QUATIC 2021. Communications in Computer and Information Science, vol 1439. Springer, Cham. [doi.org/10.1007/978-3-030-85347-1_34](https://doi.org/10.1007/978-3-030-85347-1_34)  https://doi.org/10.1007/978-3-030-85347-1_34
+
+* van der Brugge, A., Pastor-Ricós, F., Aho, P., Marín, B., & Vos, T. E. (2021). Evaluating TESTAR's effectiveness through code coverage. Actas de las XXV Jornadas de Ingeniería del Software y Bases de Datos (JISBD 2021), 1-14.[2021/JISBD/2021-JISBD-042.pdf](https://biblioteca.sistedes.es/submissions/descargas/2021/JISBD/2021-JISBD-042.pdf)
+
+* Ricós, F.P., Aho, P., Vos, T., Boigues, I.T., Blasco, E.C., Martínez, H.M. (2020). Deploying TESTAR to Enable Remote Testing in an Industrial CI Pipeline: A Case-Based Evaluation. In: Margaria, T., Steffen, B. (eds) Leveraging Applications of Formal Methods, Verification and Validation: Verification Principles. ISoLA 2020. Lecture Notes in Computer Science(), vol 12476. Springer, Cham. [doi.org/10.1007/978-3-030-61362-4_31](https://doi.org/10.1007/978-3-030-61362-4_31) 
