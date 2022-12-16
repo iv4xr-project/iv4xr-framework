@@ -160,7 +160,7 @@ You want to use iv4xr agent(s) to train a Reinforcement Learning (RL) agent with
   * R. Ferdous, F. M. Kifetew, D. Prandi, I. S. W. B. Prasetya, S. Shirzadehhajimahmood, A. Susi. _Search-based automated play testing of computer games: A model-based approach._
   13th International Symposium, SSBSE 2021.
   [doi:10.1007/978-3-030-88106-1_5](https://link.springer.com/chapter/10.1007/978-3-030-88106-1_5)
-  
+
   * Vos, T. E., Aho, P., Pastor Ricos, F., Rodriguez Valdes, O., & Mulders, A. (2021). *testar–scriptless testing through graphical user interface.* Software Testing, Verification and Reliability, 31(3), e1771. [doi.org/10.1002/stvr.1771](https://doi.org/10.1002/stvr.1771)  
-  
-  * Paper-4 etc
+
+  * [_An Appraisal Transition System for Event-Driven Emotions in Agent-Based Player Experience Testing_](https://doi.org/10.1007/978-3-030-97457-2_9), Ansari, Prasetya, Dastani, Dignum, Keller. In International Workshop on Engineering Multi-Agent Systems (EMAS), 2021.

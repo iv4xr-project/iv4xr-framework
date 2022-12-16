@@ -7,9 +7,8 @@
 * Mulders, A., Valdes, O.R., Ricós, F.P., Aho, P., Marín, B., Vos, T.E.J. (2022). _State Model Inference Through the GUI Using Run-Time Test Generation._ In: Guizzardi, R., Ralyté, J., Franch, X. (eds) Research Challenges in Information Science. RCIS 2022. Lecture Notes in Business Information Processing, vol 446. Springer, Cham. [doi.org/10.1007/978-3-031-05760-1_32](https://doi.org/10.1007/978-3-031-05760-1_32)  
 
 * I. S. W. B. Prasetya, Fernando Pastor Ricós, Fitsum Meshesha Kifetew, Davide Prandi, Samira Shirzadehhajimahmood, Tanja E. J. Vos, Premysl Paska, Karel Hovorka, Raihana Ferdous, Angelo Susi, and Joseph Davidson. 2022. _An agent-based approach to automated game testing: an experience report._ In Proceedings of the 13th International Workshop on Automating Test Case Design, Selection and Evaluation (A-TEST 2022). Association for Computing Machinery, New York, NY, USA, 1–8. [doi.org/10.1145/3548659.3561305](https://doi.org/10.1145/3548659.3561305)  
-  
-* [_An Appraisal Transition System for Event-Driven Emotions in Agent-Based Player Experience Testing_](https://arxiv.org/pdf/2105.05589), Ansari, Prasetya, Dastani, Dignum, Keller. In
-International Workshop on Engineering Multi-Agent Systems (EMAS), 2021.
+
+* [_An Appraisal Transition System for Event-Driven Emotions in Agent-Based Player Experience Testing_](https://doi.org/10.1007/978-3-030-97457-2_9), Ansari, Prasetya, Dastani, Dignum, Keller. In International Workshop on Engineering Multi-Agent Systems (EMAS), 2021.
 
 * R. Ferdous, F. M. Kifetew, D. Prandi, I. S. W. B. Prasetya, S. Shirzadehhajimahmood, A. Susi. _Search-based automated play testing of computer games: A model-based approach._ 13th International Symposium, SSBSE 2021. [doi:10.1007/978-3-030-88106-1_5](https://link.springer.com/chapter/10.1007/978-3-030-88106-1_5)
 
@@ -25,4 +24,8 @@ International Workshop on Engineering Multi-Agent Systems (EMAS), 2021.
     [_Aplib: Tactical Agents for Testing Computer Games_](https://link.springer.com/chapter/10.1007/978-3-030-66534-0_2) I. S. W. B. Prasetya, Mehdi Dastani, Rui Prada, Tanja E. J. Vos, Frank Dignum, Fitsum Kifetew,
   in Engineering Multi-Agent Systems workshop (EMAS), 2020.
 
-* Ricós, F.P., Aho, P., Vos, T., Boigues, I.T., Blasco, E.C., Martínez, H.M. (2020). Deploying TESTAR to Enable Remote Testing in an Industrial CI Pipeline: A Case-Based Evaluation. In: Margaria, T., Steffen, B. (eds) Leveraging Applications of Formal Methods, Verification and Validation: Verification Principles. ISoLA 2020. Lecture Notes in Computer Science(), vol 12476. Springer, Cham. [doi.org/10.1007/978-3-030-61362-4_31](https://doi.org/10.1007/978-3-030-61362-4_31) 
+* Ricós, F.P., Aho, P., Vos, T., Boigues, I.T., Blasco, E.C., Martínez, H.M. (2020). Deploying TESTAR to Enable Remote Testing in an Industrial CI Pipeline: A Case-Based Evaluation. In: Margaria, T., Steffen, B. (eds) Leveraging Applications of Formal Methods, Verification and Validation: Verification Principles. ISoLA 2020. Lecture Notes in Computer Science(), vol 12476. Springer, Cham. [doi.org/10.1007/978-3-030-61362-4_31](https://doi.org/10.1007/978-3-030-61362-4_31)
+
+* [_Toward automated assessment of user experience in extended reality_](https://doi.org/10.1109/ICST46399.2020.00056), or [here](https://csdl-downloads.ieeecomputer.org/proceedings/icst/2020/5778/00/09159046.pdf?Expires=1671204401&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9jc2RsLWRvd25sb2Fkcy5pZWVlY29tcHV0ZXIub3JnL3Byb2NlZWRpbmdzL2ljc3QvMjAyMC81Nzc4LzAwLzA5MTU5MDQ2LnBkZiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTY3MTIwNDQwMX19fV19&Signature=MRWiQrFdNwvBDyohmP9a9Jj9BPBNqqHgINRCinU46msptLeoKCvpdVtY~~SwFkhCDmCROmn36i0nvYCzXueSABEyYqvGCSfJiJEMMLI9SgCqw8dT21PDz7XzXPIvuSOEDTwo7DgbRrOJ7wjY7DTKcc1eKQZTn02o3pOCRksyXIb0bKM7y~ncaxS7dUcI9-h7R4CpvlbD-j5YL3q3oqYTveKvt5oj2GMpVAgfQ2hCyufSI2WZCiBjMZr1-ZC0W~kuHJf6aUlF6i1UMjndJPfLour-40QMWp8kUpKEqMUoEvepa-J3XTbC1M~HNsHRiZzNadHPgohp5ByZCBlA65V4Qg__&Key-Pair-Id=K12PMWTCQBDMDT),
+Ansari, Saba Gholizadeh.
+In 2020 IEEE 13th international conference on software testing, validation and verification (ICST), pp. 430-432. IEEE, 2020.
