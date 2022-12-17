@@ -129,12 +129,10 @@ You want to do player experience (PX) testing. There are several approaches that
 
 You want to use iv4xr agent(s) to train a Reinforcement Learning (RL) agent with the goal to train the RL agent to test the SUT. In this setup the iv4xr-agent just serves as a proxy between the RL-agent and the SUT. The RL agent is given a set of possible actions to try out as part of its learning. The iv4xr-agent is just used for executing actions chosen by the RL-agent. An action here can either be a primitive action or a whole goal-structure, depending on how you want to set it up.
 
-
-[TO DO, Thales, FBK]
-
-* Thales-way: [Documentation]
-* FBK-way: [Documentation]
+* A general interface to define Reinforcement Learning (RL) environments through the iv4xr framework and a connector to work with remote Deep Reinforcement Learning agents in Python:
+[iv4xr RL Environment library](https://github.com/iv4xr-project/iv4xrl).
 * Light weight bridge (socket-based) allowing Python RL to target a Java-side Gym: [Japyre](https://github.com/iv4xr-project/japyre)
+* There is also a separate project demonstrating the use of [Reinforcement Learning for automated test suite generation](https://github.com/iv4xr-project/iv4xr-rlbt), running on top of an iv4xr agent. The later is used to provide high level actions for Reinforcement Learning.
 
 #### Case studies
 
