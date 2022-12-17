@@ -25,9 +25,9 @@ _Iv4xr architecture_.
 
   * **Automated explorative testing** with the TESTAR agent that automatically executes non-sequential actions to navigate, interact and test that the System Under Test (SUT) and the functional aspects of the virtual entities are robust enough to respond to different user interactions. This agent automatically creates visual reports for end users and can infer a State Model that maps the information regarding the observed states and executed actions.
 
-  * **Model based testing**: this allows good quality test suites to be rapidly generated using state of the art search-based testing algorithms **[FBK modify/add]**.
+  * **Model based testing**: this allows good quality test suites to be rapidly generated using state of the art search-based testing algorithms, if a functional/behavioral model of the SUT is provided.
 
-  * **Reinforcement learning** **[what should we say here? :)]**
+  * **Reinforcement learning**: this allows an agent to be trained using Reinforcement Learning to do a certain task. This task can be testing related, e.g. to verify the reachability of a certain state (so, RL is used to train a test agent to reach such a state), or to generate a test suite that maximize coverage.
 
 ### How to build and what are in this project
 
