@@ -21,7 +21,7 @@ _Iv4xr architecture_.
 
   * **Tracing and verification:** test agents can collect execution traces during lengthy test scenarios. Assertions and Linear Temporal Logic (LTL) can be used for checking correctness, either live during test runs, or post-mortem on collected traces. Beyond verification, traces can be processed in various ways. E.g. they typically contain the agents' positions, whcih can be aggregated to visualise (or calculate) the physical area coverage of the tests.
 
-  * **Affective testing**: simulating users' emotion, e.g. to facilitate automated user experience assessment. **[Pedro/Saba one paragraph here]**
+  * **Affective testing**: using models of users' emotion to facilitate automated user experience (UX) assessment. Emotion models are obtained either by learning them from data, or crafted. Such a model can either be attached to a test agent or applied to execution traces to produce emotion traces. UX requirements formulated, e.g. regular expression or LTL, which are then evaluated on emotion traces.
 
   * **Automated explorative testing** with the TESTAR agent that automatically executes non-sequential actions to navigate, interact and test that the System Under Test (SUT) and the functional aspects of the virtual entities are robust enough to respond to different user interactions. This agent automatically creates visual reports for end users and can infer a State Model that maps the information regarding the observed states and executed actions.
 
@@ -113,13 +113,13 @@ You want to have an agent that does not follow specific instructions, such as a 
 
 #### Use case: model based testing.
 
-You want to do **model-based testing (MBT) on a computer game**. This needs a model, but on the other hand the benefit is that you can easily (and rapidly) generate test suites.
+You want to do **model-based testing (MBT) on e.g. a computer game**. This needs a model, but on the other hand the benefit is that you can easily (and rapidly) generate test suites.
 
 * [Documentation](./docs/mbt/MBT.md)
 
 #### Use case: player experience testing
 
-You want to do player experience (PX) testing on a computer game. There are several approaches that you can take, either one that is based on machine learning, or one that is model-based:
+You want to do player experience (PX) testing. There are several approaches that you can take, either one that is based on machine learning, or one that is model-based:
 
 * Using PAD approach (model free): [Documentation]
 * Using the OCC approach (model based): [Documentation](./docs/occ/occ-emotion.md)
