@@ -121,6 +121,12 @@
         </dependency>
 
         <dependency>
+        		<groupId>com.github.iv4xr-project</groupId>
+      		<artifactId>iv4xrl</artifactId>
+      		<version>1.0.16</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.iv4xr-project</groupId>
             <artifactId>iv4xr-mbt</artifactId>
             <version>1.2.0</version>
@@ -138,12 +144,12 @@
             <version>v0.9.0</version>
         </dependency>
 
- 		<dependency>
+ 		    <dependency>
             <groupId>com.github.iv4xr-project</groupId>
             <artifactId>TESTAR_iv4xr</artifactId>
             <version>v3.4</version>
         </dependency>
-       
+
        <dependency>
        		<groupId>com.github.iv4xr-project</groupId>
      		<artifactId>iv4xr-rlbt</artifactId>

@@ -4,13 +4,13 @@ The _iv4xr Framework_ is an agent-based framework for automated testing highly i
 
 Although above we mention "games", iv4xr itself is generic enough to target other types of interactive systems, even services or Java classes as long as these entities can be viewed as interactable systems.
 
-Iv4xr is a _framework_ because it is not a tool that can immediately do its work out of the box --this is not possible due to the unstandardized domains of its targets. E.g. there is no uniform way to interface with computer games, and there is no uniform representation of their states either. So before it can be used, iv4xr Framework requires an interface to be built that would allow it to control and observe the target system under test (SUT).
+Iv4xr is a _framework_ because it is not a tool that can immediately do its work out of the box. This is not possible due to the unstandardized domains of its targets; e.g. there is no uniform way to interface with computer games, and there is no uniform representation of their states either. So before it can be used, iv4xr Framework requires an interface to be built that would allow it to control and observe the target system under test (SUT).
 
 
 
 **Note:** _iv4xr_ itself stands for "intelligent verification/validation for extended reality (XR) based systems".
 During its development we have focused on piloting the Framework for testing 3D games. Solving testing problems in 3D worlds provides the foundation for testing XR systems in general. E.g. a virtual reality (VR) application typically operates on an interactive 3D virtual world. While the used devices are different (VR glass, hand tracker), and will have separate concerns to be tested, much of the correctness of its 3D world would be independent of the used devices, and therefore shares much of the aspects of that of 3D games.
-Testing an Augmented Reality (AR) application is very costly as it requires a physical agent (e.g. a robot) that interacts with our physical world. A mitigation of this is by first testing (and also re-testing) the application in a simulated 3D environment (hence reducing e.g. the frequency of costly physical re-test, or even its extent), for which we can fall back to a 3D world setup which iv4xr can address.
+Testing an Augmented Reality (AR) application is very costly as it requires a physical agent (e.g. a robot) that interacts with our physical world. As mitigation we can test and also re-test the application in a simulated 3D environment, hence reducing e.g. the frequency of costly physical re-test, or even its extent. For the first we can fall back to a 3D world setup which iv4xr can address.
 
 ![iv4xr-architecture](./docs/iv4xr_architecture1.png)
 _Iv4xr architecture_.
@@ -31,7 +31,7 @@ _Iv4xr architecture_.
 
 ### How to build and what are in this project
 
-Just run `mvn compile` from the project root. This should download and build all the Framework's components.  
+Just run `mvn compile` from the project root. This should download and build all the Framework's components. The components themselves are managed in their own repositories, and can also be used independently without the Framework.
 
 The project's main programming languages are Java and Python. The framework's components have been developed separately in their own  repositories, and this project packages them in a single project and provides a top-level hyperlinked documentation for the whole framework.
 Java components are automatically included as jar-files. Python components may have to be obtained from their repository; this will be indicated by their corresponding documentation-section in this project.
@@ -49,6 +49,8 @@ For convenience, we list some below:
 
 You can either use this project as your base, and extend it. Or, you
 can import this project as a maven dependency.
+
+If you only want to use a component (without the whole Framework), you can check out the component's github for instructions how to use it independently.
 
 ## Manuals
 
@@ -127,21 +129,26 @@ You want to do player experience (PX) testing. There are several approaches that
 
 #### Use case: you want to use reinforcement testing.
 
-You want to use iv4xr agent(s) to train a Reinforcement Learning (RL) agent with the goal to train the RL agent to test the SUT. In this setup the iv4xr-agent just serves as a proxy between the RL-agent and the SUT. The RL agent is given a set of possible actions to try out as part of its learning. The iv4xr-agent is just used for executing actions chosen by the RL-agent. An action here can either be a primitive action or a whole goal-structure, depending on how you want to set it up.
+You want to use iv4xr agent(s) to train a Reinforcement Learning (RL) agent outside iv4xr to do some task.
+In this setup the iv4xr-agent just serves as a proxy between the RL-agent and the SUT. The RL agent is given a set of possible actions to try out as part of its learning. The iv4xr-agent is used for executing actions chosen by the RL-agent. An action here can either be a primitive action or a whole goal-structure, depending on how you want to set it up.
 
-* A general interface to define Reinforcement Learning (RL) environments through the iv4xr framework and a connector to work with remote Deep Reinforcement Learning agents in Python:
+The following components are available:
+
+* A general interface to define a Reinforcement Learning (RL) environment through the iv4xr framework and a connector to work with remote Deep Reinforcement Learning agents in Python:
 [iv4xr RL Environment library](https://github.com/iv4xr-project/iv4xrl).
-* Light weight bridge (socket-based) allowing Python RL to target a Java-side Gym: [Japyre](https://github.com/iv4xr-project/japyre)
+* Light weight bridge (socket-based) allowing Python RL to target a Java-side Gym, and for the Java-side to use a Python-side learned model [Japyre](https://github.com/iv4xr-project/japyre).
 * There is also a separate project demonstrating the use of [Reinforcement Learning for automated test suite generation](https://github.com/iv4xr-project/iv4xr-rlbt), running on top of an iv4xr agent. The later is used to provide high level actions for Reinforcement Learning.
 
 #### Case studies
 
 (TODO: GoodAI,Thales,GW,all add links to your case studies, papers here)
 
-* _Space Engineers_ is a complex 3D game made by Keen Software. Brief on how iv4xr is used. LINK-to-case-study-project
+* _Space Engineers_ is a complex 3D game made by Keen Software.
+xxxxxxxx 
+[Project](https://github.com/iv4xr-project/iv4xr-se-plugin).
 * Nuclear plant simulator, brief on the case study and how iv4xr is used; LINK
 * LiveSite, brief on the case study and how iv4xr is used; LINK
-* _Lab Recruits_ is 3D maze-puzzle game. Iv4xr has been used to experiment with various forms of automated testing on this game. [Project and demo](https://github.com/iv4xr-project/iv4xrDemo).
+* _Lab Recruits_ is 3D maze-puzzle game. The game comes with a level editor, suitable for setting up experiments. Iv4xr has been used to experiment with various forms of automated testing on this game. [Project and demo](https://github.com/iv4xr-project/iv4xrDemo).
 
 ### License
 
