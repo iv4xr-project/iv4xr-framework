@@ -10,6 +10,7 @@ import static nl.uu.cs.aplib.AplibEDSL.*;
 import static eu.iv4xr.framework.Iv4xrEDSL.* ;
 
 import eu.iv4xr.framework.extensions.ltl.LTL;
+import eu.iv4xr.framework.extensions.pad.PythonCaller;
 import eu.iv4xr.framework.goalsAndTactics.Sa1Solver;
 import eu.iv4xr.framework.goalsAndTactics.Sa1Solver.Policy;
 import eu.iv4xr.framework.mainConcepts.TestAgent;
@@ -43,6 +44,9 @@ import nl.uu.cs.aplib.utils.Pair;
  * will also use <b>Linear Temporal Logic (LTL) properties</b> to formulate
  * correctness properties.
  * 
+ * <p>Additionally we also show how to trace selected values from the agent state,
+ * and save them to a trace-file, and then produce some graphs from the trace.
+ * 
  * <p>
  * Set {@link #withGraphics} to true to see the graphics. Set {@link #delay} to
  * some higher value to slow the play-test for visualisation.
@@ -75,7 +79,7 @@ public class Demo_ScenarioAutomation_using_SA1 {
 		return app;
 	}
 	
-	// adding instrumenter for visualization of results:
+	// an instrumenter for get some values from a state to be later saved in a trace file
 	Pair<String, Number>[] instrumenter(MyAgentState S) {
 		Pair<String, Number>[] out = new Pair[5];
 		out[0] = new Pair<String, Number>("time", S.worldmodel.timestamp);
@@ -84,6 +88,24 @@ public class Demo_ScenarioAutomation_using_SA1 {
 		out[3] = new Pair<String, Number>("maze", (Integer) DemoUtils.avatarState(S).properties.get("maze"));
 		out[4] = new Pair<String, Number>("hp", (Integer) DemoUtils.avatarState(S).properties.get("hp"));
 		return out;
+	}
+	
+	// for producing graphs from a trace-file
+	void mkGraph(String python, String tracefile) {
+		try {
+			var py = new PythonCaller(python) ;
+			py.runPythonFile("./python/src/aplib/timegraph.py -i " + tracefile 
+					+ " -o tmp/mdtgraph.png"
+					+ " hp maze") ;
+			py.runPythonFile("./python/src/aplib/heatmap.py -i " 
+					+ tracefile 
+					+ " -o tmp/mdhmap.png"
+					+ " --width=20 --height=20 --maxval=20 --scale=1 "
+					+ " hp") ;
+		}
+		catch(Exception e) {
+			System.out.println("### " + e.getMessage()) ;
+		}
 	}
 	
 	@Test
@@ -194,9 +216,9 @@ public class Demo_ScenarioAutomation_using_SA1 {
 		assertTrue(agent.getTestDataCollector().getNumberOfFailVerdictsSeen() == 0) ;
 		assertTrue(agent.evaluateLTLs()) ;	
 		
-		// saving trace-file and produce graphs from it:
-		agent.getTestDataCollector()
-	     .saveTestAgentScalarsTraceAsCSV(agent.getId(),"tmp/mddemo_trace.csv");
+		// saving trace-file and produce graphs from it; you can find them under ./tmp dir:
+		agent.getTestDataCollector().saveTestAgentScalarsTraceAsCSV(agent.getId(),"tmp/mddemo_trace.csv");
+		mkGraph("/usr/local/bin/python3","tmp/mddemo_trace.csv") ;
 	}
 	
 }

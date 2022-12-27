@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class PythonCaller {
 	
 	/**
-	 * The location of your python-3.
+	 * The full path of your python-3.
 	 */
 	public String python = "/anaconda3/bin/python3" ;
 	
@@ -21,7 +21,7 @@ public class PythonCaller {
 	/**
 	 * Create an instance of this class.
 	 * 
-	 * @param python  The location of your python-3.
+	 * @param python  The full path of your python-3,e.g. /usr/local/bin/python3
 	 */
 	public PythonCaller(String python) { 
 		this.python = python ;
