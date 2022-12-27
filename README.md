@@ -54,7 +54,9 @@ If you only want to use a component (without the whole Framework), you can check
 
 **Requirements:** Java at least version 11 and Python3 to run the python scripts.
 
+---
 ## Manuals
+---
 
 The manuals consist of hyper-linked documents, grouped into several sections below.
 
@@ -141,16 +143,17 @@ The following components are available:
 * Light weight bridge (socket-based) allowing Python RL to target a Java-side Gym, and for the Java-side to use a Python-side learned model [Japyre](https://github.com/iv4xr-project/japyre).
 * There is also a separate project demonstrating the use of [Reinforcement Learning for automated test suite generation](https://github.com/iv4xr-project/iv4xr-rlbt), running on top of an iv4xr agent. The later is used to provide high level actions for Reinforcement Learning.
 
-#### Case studies
+### Section 4: Demos and Case studies
 
-(TODO: GoodAI,Thales,GW,all add links to your case studies, papers here)
+[Demos are available here.](./docs/demo.md)
 
-* _Space Engineers_ is a complex 3D game made by Keen Software.
-xxxxxxxx
-[Project](https://github.com/iv4xr-project/iv4xr-se-plugin).
-* Nuclear plant simulator, brief on the case study and how iv4xr is used; LINK
-* LiveSite, brief on the case study and how iv4xr is used; LINK
-* _Lab Recruits_ is 3D maze-puzzle game. The game comes with a level editor, suitable for setting up experiments. Iv4xr has been used to experiment with various forms of automated testing on this game. [Project and demo](https://github.com/iv4xr-project/iv4xrDemo).
+Some case studies are available:
+
+* _Space Engineers_ is a complex 3D game made by Keen Software. This case study is more involved to setup. The main component you need is the interface between the game and iv4xr. This is managed in a separate [Project](https://github.com/iv4xr-project/iv4xr-se-plugin).
+
+* _Lab Recruits_ is 3D maze-puzzle game. The game comes with a level editor, suitable for setting up experiments. Iv4xr has been used to experiment with various forms of automated testing on this game. This case study is managed as a separate [Project](https://github.com/iv4xr-project/iv4xrDemo).
+
+---
 
 ### License
 
