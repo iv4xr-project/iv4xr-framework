@@ -28,7 +28,7 @@ import static nl.uu.cs.aplib.AplibEDSL.* ;
 
 import static nl.uu.cs.aplib.exampleUsages.miniDungeon.testAgent.MiniDungeonPlayerCharacterization.* ;
 
-public class PXTest_MiniDungeon {
+public class TestDemoPX {
 	
 	DungeonApp deployApp() throws Exception {
 		MiniDungeonConfig config = new MiniDungeonConfig();

@@ -157,8 +157,11 @@ agent.addLTL(f1,f2) ;
 while (G.getStatus().inProgress()) agent.update();
 assertTrue(agent.evaluateLTLs()) ;
 ```
+### Example
 
-### API References
+For an example of a JUnit test that runs a UX test see the class [TestDemoPX](src/main/java/nl/uu/cs/aplib/exampleUsages/miniDungeon/TestDemoPX.java)/
+
+### [API References](https://iv4xr-project.github.io/apidocs/jocc/javadocs/index.html)
 
 ### Relevant papers
 

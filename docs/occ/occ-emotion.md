@@ -50,8 +50,7 @@ The picture above shows the general architecture of an emotive test-agent. Such 
 
 ### PX Testing with JOCC by Example: [see here](./occ-example.md)
 
-
-### API References
+### [API References](https://iv4xr-project.github.io/apidocs/jocc/javadocs/index.html)
 
 ### Relevant papers
 

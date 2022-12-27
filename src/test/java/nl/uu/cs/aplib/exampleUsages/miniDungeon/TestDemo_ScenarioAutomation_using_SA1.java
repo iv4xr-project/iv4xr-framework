@@ -51,7 +51,7 @@ import nl.uu.cs.aplib.utils.Pair;
  * Set {@link #withGraphics} to true to see the graphics. Set {@link #delay} to
  * some higher value to slow the play-test for visualisation.
  */
-public class Demo_ScenarioAutomation_using_SA1 {
+public class TestDemo_ScenarioAutomation_using_SA1 {
 	
 	// switch to true if you want to see graphic
 	boolean withGraphics = true ;

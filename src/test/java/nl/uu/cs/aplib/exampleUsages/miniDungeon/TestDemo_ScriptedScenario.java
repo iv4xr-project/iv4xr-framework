@@ -34,10 +34,10 @@ import nl.uu.cs.aplib.exampleUsages.miniDungeon.testAgent.Utils;
  * Set {@link #withGraphics} to true to see the graphics. Set {@link #delay} to
  * some higher value to slow the play-test for visualisation.
  */
-public class Demo_ScriptedScenario {
+public class TestDemo_ScriptedScenario {
 	
 	// switch to true if you want to see graphic
-	boolean withGraphics = false ;
+	boolean withGraphics = true ;
 	boolean supressLogging = true ;
 	
 	// to control the speed of the play-test. Increase this to slow the play so

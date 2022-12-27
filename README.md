@@ -52,6 +52,8 @@ can import this project as a maven dependency.
 
 If you only want to use a component (without the whole Framework), you can check out the component's github for instructions how to use it independently.
 
+**Requirements:** Java at least version 11 and Python3 to run the python scripts.
+
 ## Manuals
 
 The manuals consist of hyper-linked documents, grouped into several sections below.
@@ -144,7 +146,7 @@ The following components are available:
 (TODO: GoodAI,Thales,GW,all add links to your case studies, papers here)
 
 * _Space Engineers_ is a complex 3D game made by Keen Software.
-xxxxxxxx 
+xxxxxxxx
 [Project](https://github.com/iv4xr-project/iv4xr-se-plugin).
 * Nuclear plant simulator, brief on the case study and how iv4xr is used; LINK
 * LiveSite, brief on the case study and how iv4xr is used; LINK
