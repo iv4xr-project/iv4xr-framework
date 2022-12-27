@@ -30,12 +30,12 @@ public class PythonCaller {
 	//String command = "python /c start python /Users/stuff/Desktop/PAD_emotion_game/map_generator.py";
     //Process p = Runtime.getRuntime().exec(command);
 	/**
-	 * Run a Python-script specified by the given path. You can also pass parameters to the script;
-	 * just append the parameters to the string specifying the path.
+	 * Run a Python-script specified by the given cmd. The cmd string should specify the path to the
+	 * script to invoke along with parameters to be passed the script. E.g. as in "a/b/script.py arg1 arg2".
 	 */
-	public ArrayList<String> runPythonFile(String file_path) throws IOException, InterruptedException {
+	public ArrayList<String> runPythonFile(String cmd) throws IOException, InterruptedException {
 	    //String command = "/anaconda3/bin/python3 " + file_path;
-	    String command = python + " " + file_path;
+	    String command = python + " " + cmd;
 	    Process p = Runtime.getRuntime().exec(command);
 	    ArrayList<String> arr = new ArrayList<>();
 	    p.waitFor();

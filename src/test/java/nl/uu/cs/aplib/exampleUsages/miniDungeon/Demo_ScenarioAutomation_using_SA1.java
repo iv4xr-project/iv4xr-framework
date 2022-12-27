@@ -24,6 +24,7 @@ import nl.uu.cs.aplib.exampleUsages.miniDungeon.testAgent.MyAgentState;
 import nl.uu.cs.aplib.exampleUsages.miniDungeon.testAgent.TacticLib;
 import nl.uu.cs.aplib.exampleUsages.miniDungeon.testAgent.Utils;
 import nl.uu.cs.aplib.mainConcepts.SimpleState;
+import nl.uu.cs.aplib.utils.Pair;
 
 /**
  * A demo showing a more abstract way to construct a test scenario with iv4xr
@@ -72,6 +73,17 @@ public class Demo_ScenarioAutomation_using_SA1 {
 		if (withGraphics)
 			DungeonApp.deploy(app);
 		return app;
+	}
+	
+	// adding instrumenter for visualization of results:
+	Pair<String, Number>[] instrumenter(MyAgentState S) {
+		Pair<String, Number>[] out = new Pair[5];
+		out[0] = new Pair<String, Number>("time", S.worldmodel.timestamp);
+		out[1] = new Pair<String, Number>("x", S.worldmodel.position.x);
+		out[2] = new Pair<String, Number>("y", S.worldmodel.position.z);
+		out[3] = new Pair<String, Number>("maze", (Integer) DemoUtils.avatarState(S).properties.get("maze"));
+		out[4] = new Pair<String, Number>("hp", (Integer) DemoUtils.avatarState(S).properties.get("hp"));
+		return out;
 	}
 	
 	@Test
@@ -157,6 +169,12 @@ public class Demo_ScenarioAutomation_using_SA1 {
 			 . setGoal(G) ;
 		// attach LTL properties to check:
 		agent.addLTL(phi1,phi2) ;
+		
+		// optionally attach an instrumenter to save instrumented values to a trace-file;
+		// we can later visualize the trace file:
+		agent.withScalarInstrumenter(S -> instrumenter((MyAgentState) S)) ;
+		
+		
 
 		Thread.sleep(1000);
 				
@@ -175,6 +193,10 @@ public class Demo_ScenarioAutomation_using_SA1 {
 		assertTrue(G.getStatus().success()) ;
 		assertTrue(agent.getTestDataCollector().getNumberOfFailVerdictsSeen() == 0) ;
 		assertTrue(agent.evaluateLTLs()) ;	
+		
+		// saving trace-file and produce graphs from it:
+		agent.getTestDataCollector()
+	     .saveTestAgentScalarsTraceAsCSV(agent.getId(),"tmp/mddemo_trace.csv");
 	}
 	
 }
