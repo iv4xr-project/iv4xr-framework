@@ -11,6 +11,10 @@ bin/
 tmp/
 target/
 output/
+suts/gym/windows
+suts/gym/Mac
+suts/gym/Windows
+suts/gym/Linux
 **/__pycache__
 pom.xml.tag
 pom.xml.releaseBackup
