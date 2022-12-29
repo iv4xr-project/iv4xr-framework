@@ -34,9 +34,10 @@ _Iv4xr architecture_.
 Just run `mvn compile` from the project root. This should download and build all the Framework's components. The components themselves are managed in their own repositories, and can also be used independently without the Framework.
 
 The project's main programming languages are Java and Python. The framework's components have been developed separately in their own  repositories, and this project packages them in a single project and provides a top-level hyperlinked documentation for the whole framework.
-Java components are automatically included as jar-files. Python components may have to be obtained from their repository; this will be indicated by their corresponding documentation-section in this project.
+Java components are automatically included as jar-files. Python scripts are explicitly included;
+they can be found in `python/src`.
 
-Since this project integrates jars, you do not get the source code. To get the source code you need to go to their respective repository.
+Since this project integrates jars, you do not get the source code of the Java components.
 If you need the source code, they can be obtained from the respective
 repository of the components; they should be linked from their respective documentation-section.
 For convenience, we list some below:
@@ -48,7 +49,8 @@ For convenience, we list some below:
 ### Using the project
 
 You can either use this project as your base, and extend it. Or, you
-can import this project as a maven dependency.
+can import this project as a maven dependency. You need to copy the Python scripts
+to some location of choice in your own project if you intend to use them.
 
 If you only want to use a component (without the whole Framework), you can check out the component's github for instructions how to use it independently.
 
@@ -101,6 +103,8 @@ This section introduces the basic concepts of agent programming and agent-based 
 ### Section 3: Use Cases
 <a name="section3"></a>
 
+By a _use case_ we mean a typical way of using iv4xr. In particular a 'use case' does NOT refer to a 'case study'.
+
 Iv4xr provides more than just basic test agents. The features include e.g. explorative testing and user/player experience testing. This section explains several typical use cases of iv4xr testing, making use its features.
 
 Regardless the use case, note that iv4xr always need an [interface for controlling and observing the SUT](#section1) and its related components, as explained in Section 1.
@@ -129,6 +133,9 @@ You want to do player experience (PX) testing. There are several approaches that
 
 * Using PAD approach (model free): [Documentation]
 * Using the OCC approach (model based): [Documentation](./docs/occ/occ-emotion.md)
+* The OCC method allows Linear Temporal Logic (LTL) to be used to express user experience requirements
+that will be checked online (as the tests proceed).
+However, LTL can also be used offline on traces produced by tests. Both PAD and OCC approaches can be configured to produce traces. The offline version of LTL is more expressive, e.g. it can be used to express UX requirements on certain areas in a virtual world. [More on LTL-offline can be found here](https://github.com/iv4xr-project/ltl-pxevaluation). 
 
 
 #### Use case: you want to use reinforcement testing.
@@ -147,7 +154,7 @@ The following components are available:
 
 [Demos are available here.](./docs/demo.md)
 
-Some case studies are available:
+Projects related to bigger case studies are available, for those interested:
 
 * _Space Engineers_ is a complex 3D game made by Keen Software. This case study is more involved to setup. The main component you need is the interface between the game and iv4xr. This is managed in a separate [Project](https://github.com/iv4xr-project/iv4xr-se-plugin).
 
