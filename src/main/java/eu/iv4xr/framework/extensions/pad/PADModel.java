@@ -7,10 +7,9 @@ import java.util.ArrayList;
 
 /**
  * Provide methods to train and use the a PAD model. Note that the library is
- * actually implemented in Python. This class just provides methods to call
+ * actually implemented in Python in the "./python/src/pad" folder. This class just provides methods to call
  * the key scripts from that library.
  * 
- * This seems to assume the scripts are in the project root!! FIX THIS.
  */
 public class PADModel {
 	
@@ -19,9 +18,9 @@ public class PADModel {
 	
 	
 	/**
-	 * Train a PAD model.
-	 * @param folder_path  ???
-	 * @return  ???
+	 * Trains a PAD model.
+	 * @param folder_path  folder containing the traces that will be used for training the model.
+	 * @return None
 	 */
 	public ArrayList<String> trainModel(String folder_path) throws IOException, InterruptedException {
 	    
@@ -33,9 +32,9 @@ public class PADModel {
 	}
 	
 	/**
-	 * Train and save a PAD model.
-	 * @param folder_path ???
-	 * @return ???
+	 * Trains and saves three predictive models: one for each dimension of the PAD emotional model.
+	 * @param folder_path folder containing the traces that will be used for training the model
+	 * @return the content of the Python terminal
 	 */
 	public ArrayList<String> trainAndSaveModel(String folder_path) throws IOException, InterruptedException {
 	    
@@ -49,8 +48,9 @@ public class PADModel {
 	/**
 	 * Predict emotion using a trained PAD model.
 	 * @param folder_path   the folder where the model is located.
-	 * @param trained_model_file the file name of the model.
-	 * @return ???
+	 * @param pad_dimension the dimension of the PAD model to be predicited
+	 * @param trained_model_file the file path to the pre trained model.
+	 * @return the content of the Python terminal
 	 */
 	public ArrayList<String> predictWithTrainedModel(String folder_path, String pad_dimension, String trained_model_file) throws IOException, InterruptedException {
 	    
@@ -62,7 +62,7 @@ public class PADModel {
     
 	}
 	
-	// just for test
+	// just for test and assuming there are trace files in the "./python/src/pad/First_Study/" folder
 	public static void main(String args[]) throws IOException, InterruptedException{  
 		PADModel testy = new PADModel();
 		
