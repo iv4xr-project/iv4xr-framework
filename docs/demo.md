@@ -4,6 +4,8 @@
 
 These demos are simple to setup. The demos show a number of automated tests on a simple 2D game as the system under test (SUT). The game is called _MiniDungeon_ which has the flavour of the Nethack game from 80's.
 
+![MiniDungeon](./occ/minidungeonShot2.png)
+
 **If you first want to play the game** (could be fun...): run the class [`DemoPlayMiniDungeon`](../src/main/java/nl/uu/cs/aplib/exampleUsages/miniDungeon/DemoPlayMiniDungeon.java) . The simplest way to run the class is using Maven:
 
    * Clone the iv4xr-framework project. Then from the project root, run:
@@ -34,6 +36,9 @@ Alternatively, you can also import the project into an IDE like Eclipse, and the
 ## Demo testing 3D game Lab Recruits
 
 The demos show a number of automated tests on a 3D game as the system under test (SUT). The game is called _Lab Recruits_. It is mostly a maze-puzzle game played in a lab-building (also called a 'level'), but it may also have hazards in the form fire and infected lab personnels.
+
+![Lab Recruits](./LRSS3.png)
+
 
 **Installing Lab Recruits.** We do not provide a pre-built executable of Lab Recruits, so you need to build it first. [Instructions can be found in its Github page](https://github.com/iv4xr-project/labrecruits). After you build the executable, put it under `/suts/gym` directory of this project. See also [the instruction here](../suts/gym/readme.txt). I never tried Linux build myself, not sure if that would produce graphics...
 
