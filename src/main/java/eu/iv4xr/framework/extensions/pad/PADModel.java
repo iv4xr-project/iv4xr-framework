@@ -26,7 +26,7 @@ public class PADModel {
 	public ArrayList<String> trainModel(String folder_path) throws IOException, InterruptedException {
 	    
 		
-		String query = "predictor.py just_train " + folder_path;
+		String query = "./python/src/pad/predictor.py just_train " + folder_path;
 		
 		return this.p_caller.runPythonFile(query);
     
@@ -40,7 +40,7 @@ public class PADModel {
 	public ArrayList<String> trainAndSaveModel(String folder_path) throws IOException, InterruptedException {
 	    
 		
-		String query = "predictor.py train_and_save " + folder_path;
+		String query = "./python/src/pad/predictor.py train_and_save " + folder_path;
 		
 		return this.p_caller.runPythonFile(query);
     
@@ -52,10 +52,10 @@ public class PADModel {
 	 * @param trained_model_file the file name of the model.
 	 * @return ???
 	 */
-	public ArrayList<String> predictWithTrainedModel(String folder_path, String trained_model_file) throws IOException, InterruptedException {
+	public ArrayList<String> predictWithTrainedModel(String folder_path, String pad_dimension, String trained_model_file) throws IOException, InterruptedException {
 	    
 		
-		String query = "predictor.py predict " + folder_path + " " + trained_model_file;
+		String query = "./python/src/pad/predictor.py predict " + pad_dimension + " " + folder_path + " " + trained_model_file;
 		System.out.println(query);
 		
 		return this.p_caller.runPythonFile(query);
@@ -66,14 +66,15 @@ public class PADModel {
 	public static void main(String args[]) throws IOException, InterruptedException{  
 		PADModel testy = new PADModel();
 		
-		//String folder_path = "./data/First_Study/";
+		String folder_path = "./python/src/pad/First_Study/";
 		
-		//testy.trainAndSaveModel(folder_path);
+		testy.trainAndSaveModel(folder_path);
 		
-		String folder_path = "./data/Traces/";
-		String trained_model_file = "./trained_forest_Arousal.pkl";
+		//String folder_path = "./python/src/pad/Traces/";
+		//String trained_model_file = "./python/src/pad/trained_forest_Arousal.pkl";
+		//String pad_dimension = "Arousal";
 		
-		System.out.println(testy.predictWithTrainedModel(folder_path, trained_model_file));
+		//System.out.println(testy.predictWithTrainedModel(folder_path, pad_dimension, trained_model_file));
 		
 		 
 	}  
