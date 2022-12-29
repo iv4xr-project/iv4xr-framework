@@ -6,6 +6,7 @@ import agents.tactics.GoalLib;
 import agents.tactics.TacticLib;
 import environments.LabRecruitsConfig;
 import environments.LabRecruitsEnvironment;
+import eu.iv4xr.framework.extensions.pad.PythonCaller;
 import eu.iv4xr.framework.goalsAndTactics.Sa1Solver;
 import eu.iv4xr.framework.goalsAndTactics.Sa1Solver.Policy;
 import eu.iv4xr.framework.mainConcepts.TestDataCollector;
@@ -17,8 +18,12 @@ import nl.uu.cs.aplib.exampleUsages.miniDungeon.testAgent.Utils;
 import nl.uu.cs.aplib.mainConcepts.Environment;
 import nl.uu.cs.aplib.mainConcepts.Goal;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure;
+import nl.uu.cs.aplib.utils.Pair;
+
 import static org.junit.jupiter.api.Assertions.* ;
 
+import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.util.Scanner;
 import java.util.function.Function;
 
@@ -35,110 +40,94 @@ import static nl.uu.cs.aplib.AplibEDSL.*;
 import static eu.iv4xr.framework.Iv4xrEDSL.* ;
 
 /**
- * Another demo of testing with iv4xr. This one uses the R8_fire3 level. The level is of
- * medium-size. It was based on a generated level by FBK, and then pimped by hand. The leven
- * has fire hazards and monsters. Monsters in Lab Recruits cannot be killed, but they are
- * slow and will pause after hitting. Players can heal by touching a goal flag (once).
+ * In this demo, the testing task to do is to verify that the level's end-goal
+ * is reachable. The end-goal is represented by a flag that will give the player
+ * lots of point when touched. Internally, the flag is identified with ID
+ * "Finish".
+ * 
+ * <p>We want to do the test differently than in {@link TestDemo_ScriptedScenario_BD}:
+ * 
+ * <ul>
+ *     <li> We will run a different scenario/path to get to Finish.
+ *     <li> We will use a simple search algorithm called SA1 to automate opening doors 
+ *     (at least, some doors), so that we do not have to explicitly specify which 
+ *     buttons to toggle to open a particular door. SA1 works well if the setup is not
+ *     too complicated, e.g. if we have multi-connections where the correct button is
+ *     further from the target door.
+ * </ul>
+ * 
+ * <p>Additionally we also show how to trace selected values from the agent state,
+ * and save them to a trace-file, and then produce some graphs from the trace.
+ * They can be found in ./tmp directory.
+ * 
+ * <p>
+ * Set {@link #withGraphics} to true to see the graphics.
+ * 
+ * @author Wish
  */
-public class TestDemo_ScriptedScenario {
+public class TestDemo_ScenarioAutomation_R8_using_SA1 {
 
     private static LabRecruitsTestServer labRecruitsTestServer;
+    
+    // switch to true if you want to see graphic
+ 	static boolean withGraphics = true ;
+    static String projectRoot ;
+    static String labRecruitesExeRootDir ;
+    static String levelsDir ;
 
     @BeforeAll
     static void start() {
+    	// Configuring the locations of the Lab-Recruits executable and
+    	// the level-definition files:
+    	String fileSeparator = FileSystems.getDefault().getSeparator();
+    	projectRoot = System.getProperty("user.dir") ;
+    	labRecruitesExeRootDir = projectRoot + fileSeparator + "suts" ;
+    	levelsDir = labRecruitesExeRootDir 
+    			+ fileSeparator + "gym"
+    			+ fileSeparator + "levels" ;
+    	
+    	TestSettings.USE_GRAPHICS = withGraphics ;
     	// TestSettings.USE_SERVER_FOR_TEST = false ;
-    	// Uncomment this to make the game's graphic visible:
-    	//TestSettings.USE_GRAPHICS = true ;
-    	String labRecruitesExeRootDir = System.getProperty("user.dir") ;
+
+    	// Launch the game (the game acts as a server, accepting commands from our side):
     	labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(labRecruitesExeRootDir) ;
     }
 
     @AfterAll
-    static void close() { if(labRecruitsTestServer!=null) labRecruitsTestServer.close(); }
-
-    
-    /**
-     * In this testing task/scenario we run the scenario:
-     * 
-     * <p>  door3 ; door1 ; door0 ; door4 ; Finish 
-     * 
-     * <p> We want to check that Finish is reachable in this scenario. After passing door4
-     * the agent health should be between 20..50 and it should have at least 34 points. 
-     * After touching Finish the health should be 100 and the point should be at least 524.
-     * 
-     * <p>You will notice that in order to 'script' the above testing task/scenario,
-     * the approach below requires that we also specify how to open each of the doors
-     * above, e.g. by specifying that a certain button needs to be interacted first
-     * to get a certain door open.
-     */
-    @Test
-    public void scripted_testscenario1() throws InterruptedException {
-
-        // Create an environment
-    	var config = new LabRecruitsConfig("R8_fire3") ;
-    	config.light_intensity = 0.3f ;
-    	//config.agent_speed = 0.2f ;
-    	//config.view_distance = 6 ;
-    	var environment = new LabRecruitsEnvironment(config);
-    	if(TestSettings.USE_GRAPHICS) {
-    		System.out.println("You can drag then game window elsewhere for beter viewing. Then hit RETURN to continue.") ;
-    		new Scanner(System.in) . nextLine() ;
-    	}
-    	
-    	// create a test agent
-        var testAgent = new LabRecruitsTestAgent("Elono") ;
-        
-        // define the testing-task:
-        var G = SEQ(
-        		GoalLib.entityInteracted("b0"),
-        		GoalLib.entityStateRefreshed("door3"),
-        		assertTrue_(testAgent,"","door3 is open",(BeliefState S) -> S.isOpen("door3")),
-        		GoalLib.entityStateRefreshed("door1"),
-        		assertTrue_(testAgent,"","door1 is open",(BeliefState S) -> S.isOpen("door1")),
-        		GoalLib.entityInteracted("b9"),
-        		GoalLib.entityStateRefreshed("door0"),
-        		assertTrue_(testAgent,"","door0 is open",(BeliefState S) -> S.isOpen("door0")),
-        		GoalLib.entityInteracted("b3"),
-        		GoalLib.entityStateRefreshed("door4"),
-        		assertTrue_(testAgent,"","door4 is open",(BeliefState S) -> S.isOpen("door4")),
-        		assertTrue_(testAgent,"","health and score ok",(BeliefState S) -> 
-        			S.worldmodel().health >= 20 && S.worldmodel().health <= 50
-        			&& S.worldmodel().score >= 33),
-        		GoalLib.atBGF ("Finish",0.2f,true),
-        		assertTrue_(testAgent,"","health and score max",(BeliefState S) -> 
-    				S.worldmodel().health == 100 && S.worldmodel().score >= 533)
-        );
-
-        
-        testAgent 
-        	. attachState(new BeliefState())
-        	. attachEnvironment(environment)
-        	. setTestDataCollector(new TestDataCollector())
-        	. setTestDataCollector(new TestDataCollector()) 
-        	. setGoal(G) ;
-        
-        try {
-	        //environment.startSimulation(); 
-	        int i = 0 ;
-	        // keep updating the agent
-	        while (G.getStatus().inProgress()) {
-	        	System.out.println("*** " + i + ", " + testAgent.state().id + " @" + testAgent.state().worldmodel.position) ;
-	            Thread.sleep(50);
-	            i++ ;
-	        	testAgent.update();
-	        	if (i>3500) {
-	        		break ;
-	        	}
-	        }
-	        
-	        // check that we have passed both tests above:
-	        assertTrue(testAgent.success());
-	        assertTrue(testAgent.getTestDataCollector().getNumberOfFailVerdictsSeen() == 0) ;
-	        //testAgent.printStatus();
-	        //new Scanner(System.in) . nextLine() ;
-        }
-        finally { environment.close(); }
+    static void close() { 
+    	// closing the game, if it was launches by us:
+    	if(labRecruitsTestServer!=null) labRecruitsTestServer.close(); 
     }
+
+ // an instrumenter for get some values from a state to be later saved in a trace file
+   	Pair<String, Number>[] instrumenter(BeliefState S) {
+   		Pair<String, Number>[] out = new Pair[5];
+   		out[0] = new Pair<String, Number>("time", S.worldmodel().timestamp);
+   		out[1] = new Pair<String, Number>("x", S.worldmodel().position.x);
+   		out[2] = new Pair<String, Number>("y", S.worldmodel().position.z);
+   		out[3] = new Pair<String, Number>("score", S.worldmodel().score);
+   		out[4] = new Pair<String, Number>("health", S.worldmodel().health);
+   		return out;
+   	}
+   	
+      // for producing graphs from a trace-file
+   	void mkGraph(String python, String tracefile) {
+   		try {
+   			var py = new PythonCaller(python) ;
+   			py.runPythonFile("./python/src/aplib/timegraph.py -i " + tracefile 
+   					+ " -o tmp/lr_r8b_tgraph.png"
+   					+ " health score") ;
+   			py.runPythonFile("./python/src/aplib/heatmap.py -i " 
+   					+ tracefile 
+   					+ " -o tmp/lr_r8b_hmap.png"
+   					+ " --width=100 --height=70 --maxval=100 --scale=0.5 "
+   					+ "health") ;
+   		}
+   		catch(Exception e) {
+   			System.out.println("### " + e.getMessage()) ;
+   		}
+   	}
+    
     
     /**
      * A goal that will just explore the world for some time-budget. The goal itself
@@ -174,18 +163,16 @@ public class TestDemo_ScriptedScenario {
      * can avoid explicitly scripting how to open some doors.
      */
     @Test
-    public void scenario2() throws InterruptedException {
+    public void scenario2() throws InterruptedException, IOException {
 
         // Create an environment
-    	var config = new LabRecruitsConfig("R8_fire3") ;
+    	var config = new LabRecruitsConfig("R8_fire3",levelsDir) ;
     	config.light_intensity = 0.3f ;
     	//config.agent_speed = 0.2f ;
     	//config.view_distance = 6 ;
     	var environment = new LabRecruitsEnvironment(config);
-    	if(TestSettings.USE_GRAPHICS) {
-    		System.out.println("You can drag then game window elsewhere for beter viewing. Then hit RETURN to continue.") ;
-    		new Scanner(System.in) . nextLine() ;
-    	}
+    	//TestSettings.youCanRepositionWindow();
+    	
     	var testAgent = new LabRecruitsTestAgent("Elono")  ;
     	
     	// configuring SA1-solver:		
@@ -236,14 +223,16 @@ public class TestDemo_ScriptedScenario {
 					S.worldmodel().health == 100 && S.worldmodel().score >= 633)
         		
         );
-
         
         testAgent 
         	. attachState(new BeliefState())
         	. attachEnvironment(environment)
-        	. setTestDataCollector(new TestDataCollector())
         	. setTestDataCollector(new TestDataCollector()) 
         	. setGoal(G) ;
+        
+        // optionally attach an instrumenter to save instrumented values to a trace-file;
+     	// we can later visualize the trace file:
+        testAgent.withScalarInstrumenter(S -> instrumenter((BeliefState) S)) ;
         
         try {
         	
@@ -255,7 +244,7 @@ public class TestDemo_ScriptedScenario {
 	            Thread.sleep(50);
 	            i++ ;
 	        	testAgent.update();
-	        	if (i>3500) {
+	        	if (i>1500) {
 	        		break ;
 	        	}
 	        }
@@ -263,6 +252,9 @@ public class TestDemo_ScriptedScenario {
 	        // check that we have passed both tests above:
 	        assertTrue(testAgent.success());
 	        assertTrue(testAgent.getTestDataCollector().getNumberOfFailVerdictsSeen() == 0) ;
+	        // saving trace-file and produce graphs from it; you can find them under ./tmp dir:
+	        testAgent.getTestDataCollector().saveTestAgentScalarsTraceAsCSV(testAgent.getId(),"tmp/lr_r8b_demo_trace.csv");
+			mkGraph("/usr/local/bin/python3","tmp/lr_r8b_demo_trace.csv") ;
 	        //testAgent.printStatus();
 	        //new Scanner(System.in) . nextLine() ;
         }
