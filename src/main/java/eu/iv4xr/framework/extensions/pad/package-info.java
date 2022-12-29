@@ -1,5 +1,4 @@
 /**
- * Provide an interface called {@link ITestFactory} to allow any tests-producing
- * algorithm to produce tests that can be executed by iv4xr test-agents.
+ * Provide classes to train and use the a PAD model.
  */
 package eu.iv4xr.framework.extensions.pad;
