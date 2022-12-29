@@ -46,6 +46,7 @@ import nl.uu.cs.aplib.utils.Pair;
  * 
  * <p>Additionally we also show how to trace selected values from the agent state,
  * and save them to a trace-file, and then produce some graphs from the trace.
+ * They can be found in ./tmp directory.
  * 
  * <p>
  * Set {@link #withGraphics} to true to see the graphics. Set {@link #delay} to
