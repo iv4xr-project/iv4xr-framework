@@ -135,7 +135,7 @@ You want to do player experience (PX) testing. There are several approaches that
 * Using the OCC approach (model based): [Documentation](./docs/occ/occ-emotion.md)
 * The OCC method allows Linear Temporal Logic (LTL) to be used to express user experience requirements
 that will be checked online (as the tests proceed).
-However, LTL can also be used offline on traces produced by tests. Both PAD and OCC approaches can be configured to produce traces. The offline version of LTL is more expressive, e.g. it can be used to express UX requirements on certain areas in a virtual world. [More on LTL-offline can be found here](https://github.com/iv4xr-project/ltl-pxevaluation). 
+However, LTL can also be used offline on traces produced by tests. Both PAD and OCC approaches can be configured to produce traces. The offline version of LTL is more expressive, e.g. it can be used to express UX requirements on certain areas in a virtual world. [More on LTL-offline can be found here](https://github.com/iv4xr-project/ltl-pxevaluation).
 
 
 #### Use case: you want to use reinforcement testing.
@@ -160,6 +160,9 @@ Projects related to bigger case studies are available, for those interested:
 
 * _Lab Recruits_ is 3D maze-puzzle game. The game comes with a level editor, suitable for setting up experiments. Iv4xr has been used to experiment with various forms of automated testing on this game. This case study is managed as a separate [Project](https://github.com/iv4xr-project/iv4xrDemo).
 
+Some closed-source projects we can mention, where iv4xr was piloted: [LIVEsite](http://sensor.mabeyhire.co.uk/Public/Home), THALES simulator.
+
+
 ---
 
 ### License
@@ -167,8 +170,6 @@ Projects related to bigger case studies are available, for those interested:
 
 
 ### Papers [(full list here)](./docs/papers.md)
-
-(TODO: all -> add your main papers here, the rest in docs/papers.md)
 
   * Concepts behind agent-based automated testing:
     [_Aplib: Tactical Agents for Testing Computer Games_](https://link.springer.com/chapter/10.1007/978-3-030-66534-0_2) I. S. W. B. Prasetya, Mehdi Dastani, Rui Prada, Tanja E. J. Vos, Frank Dignum, Fitsum Kifetew,
