@@ -9,7 +9,6 @@ import java.util.ArrayList;
  * Provide methods to train and use the a PAD model. Note that the library is
  * actually implemented in Python in the "./python/src/pad" folder. This class just provides methods to call
  * the key scripts from that library.
- * 
  */
 public class PADModel {
 	
