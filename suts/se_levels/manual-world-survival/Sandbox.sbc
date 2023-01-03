@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <MyObjectBuilder_Checkpoint xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <CurrentSector x="0" y="0" z="0" />
-  <ElapsedGameTime>46870560000</ElapsedGameTime>
+  <ElapsedGameTime>46910560000</ElapsedGameTime>
   <SessionName>Manual World Survival</SessionName>
   <SpectatorPosition>
     <Position x="-0.32934382554148806" y="-0.074394008015407867" z="1.5750704078872861" />
@@ -21,7 +21,7 @@
   <ControlledObject>124168712738897777</ControlledObject>
   <Password />
   <Description />
-  <LastSaveTime>2022-10-24T08:56:23.9691408+02:00</LastSaveTime>
+  <LastSaveTime>2022-12-13T10:59:17.5734302+01:00</LastSaveTime>
   <SpectatorDistance>4.420889</SpectatorDistance>
   <WorkshopId xsi:nil="true" />
   <WorkshopId1 xsi:nil="true" />
@@ -248,7 +248,7 @@
       <dictionary />
     </variables>
   </ScriptManagerData>
-  <AppVersion>1201013</AppVersion>
+  <AppVersion>1201014</AppVersion>
   <Factions>
     <Factions>
       <MyObjectBuilder_Faction>
@@ -312,11 +312,11 @@
       <Model>Default_Astronaut</Model>
       <ColorMask x="0" y="0.199999988" z="0.55" />
       <BlockLimitModifier>0</BlockLimitModifier>
-      <LastLoginTime>2022-10-24T08:56:12.5937764+02:00</LastLoginTime>
+      <LastLoginTime>2022-12-13T10:59:13.6635779+01:00</LastLoginTime>
       <SavedCharacters>
         <long>124168712738897777</long>
       </SavedCharacters>
-      <LastLogoutTime>2022-10-24T08:56:23.9891404+02:00</LastLogoutTime>
+      <LastLogoutTime>2022-12-13T10:59:17.5744313+01:00</LastLogoutTime>
       <RespawnShips />
       <LastDeathPosition xsi:nil="true" />
       <ActiveContracts />
@@ -327,7 +327,7 @@
       <DisplayName>Space Pirates</DisplayName>
       <CharacterEntityId>0</CharacterEntityId>
       <BlockLimitModifier>0</BlockLimitModifier>
-      <LastLoginTime>2022-10-24T08:56:14.7307773+02:00</LastLoginTime>
+      <LastLoginTime>2022-12-13T10:59:13.7235778+01:00</LastLoginTime>
       <SavedCharacters />
       <LastLogoutTime>0001-01-01T00:00:00</LastLogoutTime>
       <RespawnShips />
@@ -707,7 +707,7 @@
     </MyObjectBuilder_SessionComponent>
     <MyObjectBuilder_SessionComponent xsi:type="MyObjectBuilder_SectorWeatherComponent">
       <BaseSunDirection x="0.339467347" y="0.709795356" z="-0.617213368" />
-      <SunDirectionNormalized x="0.514192939" y="-0.413663417" z="0.7513244" />
+      <SunDirectionNormalized x="0.516935" y="-0.411647618" z="0.750549436" />
       <WeatherPlanetData />
     </MyObjectBuilder_SessionComponent>
     <MyObjectBuilder_SessionComponent xsi:type="MyObjectBuilder_SessionComponentAssetModifiers" />
@@ -716,7 +716,7 @@
       <PlayerData>
         <PlayerContainerData>
           <PlayerId>144115188075855895</PlayerId>
-          <Timer>657</Timer>
+          <Timer>652</Timer>
           <Active>true</Active>
           <Competetive>false</Competetive>
           <ContainerId>0</ContainerId>
@@ -6871,7 +6871,7 @@
     </MyObjectBuilder_SessionComponent>
     <MyObjectBuilder_SessionComponent xsi:type="MyObjectBuilder_AntennaSessionComponent" />
     <MyObjectBuilder_SessionComponent xsi:type="MyObjectBuilder_EnvironmentBotSpawningSystem">
-      <TimeSinceLastEventInMs>92515</TimeSinceLastEventInMs>
+      <TimeSinceLastEventInMs>96649</TimeSinceLastEventInMs>
     </MyObjectBuilder_SessionComponent>
     <MyObjectBuilder_SessionComponent xsi:type="MyObjectBuilder_TradingManager" />
     <MyObjectBuilder_SessionComponent xsi:type="MyObjectBuilder_CoordinateSystem">
@@ -6953,6 +6953,11 @@
     <string>Models\Cubes\Large\ConveyorTubeCurved.mwm</string>
     <string>Models\Cubes\Large\OxygenGenerator.mwm</string>
     <string>Models\Cubes\Large\CargoContainerSmall.mwm</string>
+    <string>Models\Cubes\Large\CockpitLarge.mwm</string>
+    <string>Models\Cubes\Large\CockpitOpen.mwm</string>
+    <string>Models\Cubes\Large\OpenCockpitLarge.mwm</string>
+    <string>Models\Cubes\Large\HydrogenEngine.mwm</string>
+    <string>Models\Cubes\Large\ConveyorTube.mwm</string>
   </VicinityModelsCache>
   <VicinityArmorModelsCache>
     <string>Models\Characters\Astronaut\SE_astronaut.mwm</string>
@@ -6960,4 +6965,5 @@
     <string>Models\Cubes\Large\Armor\SquarePlate.mwm</string>
   </VicinityArmorModelsCache>
   <VicinityVoxelCache />
+  <WorldId>00000000-0000-0000-0000-000000000000</WorldId>
 </MyObjectBuilder_Checkpoint>

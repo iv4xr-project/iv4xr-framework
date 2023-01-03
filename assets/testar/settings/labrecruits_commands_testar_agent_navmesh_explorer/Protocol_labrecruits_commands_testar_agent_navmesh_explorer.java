@@ -112,8 +112,6 @@ public class Protocol_labrecruits_commands_testar_agent_navmesh_explorer extends
 
 		// For every interactive entity agents have the possibility to move and interact with
 		for(Widget w : state) {
-			// TESTAR can try to move towards it
-			labActions.add(new labActionCommandMove(w, labRecruitsEnv, agentId, w.get(IV4XRtags.entityPosition), false, false, false));
 			// If TESTAR sees an Interactive Entity
 			if(isInteractiveEntity(w)) {
 				// try to move and interact with

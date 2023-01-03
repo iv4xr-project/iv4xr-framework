@@ -30,19 +30,13 @@
 
 import java.util.HashSet;
 import java.util.Set;
-import org.fruit.Util;
 import org.fruit.alayer.*;
-import org.fruit.alayer.exceptions.ActionFailedException;
-import org.fruit.monkey.ConfigTags;
-import org.testar.iv4xr.SpatialXMLmap;
-import org.testar.iv4xr.InteractiveSelectorSE;
+import org.fruit.monkey.Settings;
 import org.testar.protocols.iv4xr.SEProtocol;
 
-import eu.iv4xr.framework.spatial.Vec3;
 import eu.testar.iv4xr.actions.se.commands.*;
 import eu.testar.iv4xr.actions.se.goals.*;
 import eu.testar.iv4xr.enums.IV4XRtags;
-import eu.testar.iv4xr.enums.SVec3;
 import nl.ou.testar.RandomActionSelector;
 import spaceEngineers.model.Vec3F;
 
@@ -73,9 +67,17 @@ public class Protocol_se_testar_navigate_survival extends SEProtocol {
 	private static Set<String> toolEntities;
 	static {
 		toolEntities = new HashSet<String>();
-		//toolEntities.add("LargeBlockSmallGenerator");
 		toolEntities.add("LargeBlockBatteryBlock");
 		toolEntities.add("SurvivalKitLarge");
+		toolEntities.add("LargeHydrogenEngine");
+	}
+
+	private static Set<String> fragileEntities;
+	static {
+		fragileEntities = new HashSet<String>();
+		fragileEntities.add("LargeBlockSmallGenerator");
+		fragileEntities.add("ConveyorTubeCurved");
+		fragileEntities.add("LargeBlockSmallContainer");
 	}
 
 	private static Set<String> interactiveEnergyEntities;
@@ -84,52 +86,20 @@ public class Protocol_se_testar_navigate_survival extends SEProtocol {
 		interactiveEnergyEntities.add("LargeBlockCockpit");
 		interactiveEnergyEntities.add("LargeBlockCockpitSeat");
 		interactiveEnergyEntities.add("CockpitOpen");
+		interactiveEnergyEntities.add("OpenCockpitLarge");
 		interactiveEnergyEntities.add("LargeBlockCryoChamber");
 	}
 
-	private InteractiveSelectorSE actionSelectorSE = new InteractiveSelectorSE();
-
-	// Oracle example to validate that the block integrity decreases after a Grinder action
-	private Verdict functional_verdict = Verdict.OK;
-
-
 	/**
-	 * This methods is called before each test sequence, allowing for example using external profiling software on the SUT
+	 * Called once during the life time of TESTAR
+	 * This method can be used to perform initial setup work
+	 * @param settings the current TESTAR settings as specified by the user.
 	 */
 	@Override
-	protected void preSequencePreparations() {
-		super.preSequencePreparations();
-
-		// TODO: Improve and obtain automatically from test settings
-		// Create a XML spatial map based on the desired SpaceEngineers level
-		SpatialXMLmap.prepareSpatialXMLmap("suts/se_levels/manual-world-survival");
-	}
-
-	/**
-	 * This method is called when the TESTAR requests the state of the SUT.
-	 * Here you can add additional information to the SUT's state or write your
-	 * own state fetching routine.
-	 *
-	 * super.getState(system) puts the state information also to the HTML sequence report
-	 *
-	 * @return  the current state of the SUT with attached oracle.
-	 */
-	@Override
-	protected State getState(SUT system) {
-		State state = super.getState(system);
-
-		SpatialXMLmap.updateAgentObservation(state);
-
-		return state;
-	}
-
-	/**
-	 * This method is invoked each time the TESTAR starts the SUT to generate a new sequence.
-	 */
-	@Override
-	protected void beginSequence(SUT system, State state) {
-		super.beginSequence(system, state);
-		actionSelectorSE = new InteractiveSelectorSE();
+	protected void initialize(Settings settings) {
+		super.initialize(settings);
+		// The SE level that TESTAR is going to explore
+		SE_LEVEL_PATH = "suts/se_levels/manual-world-survival";
 	}
 
 	/**
@@ -201,7 +171,7 @@ public class Protocol_se_testar_navigate_survival extends SEProtocol {
 
 		// For each block widget (see movementEntities types), rotate and move until the agent is close to the position of the block
 		for(Widget w : state) {
-			if(toolEntities.contains(w.get(IV4XRtags.entityType)) && seReachablePositionHelper.calculateIfEntityReachable(system, w)) {
+			if(toolEntities.contains(w.get(IV4XRtags.entityType)) && sePositionRotationHelper.calculateIfEntityReachable(system, w)) {
 				// Always Grinder and shoot by default
 				labActions.add(new seActionNavigateGrinderBlock(w, system, agentId, 1, 1.0));
 				labActions.add(new seActionNavigateShootBlock(w, system, agentId));
@@ -211,32 +181,41 @@ public class Protocol_se_testar_navigate_survival extends SEProtocol {
 				}
 			}
 
+			if(fragileEntities.contains(w.get(IV4XRtags.entityType)) && sePositionRotationHelper.calculateIfEntityReachable(system, w)) {
+				// Always Grinder and shoot by default
+				labActions.add(new seActionNavigateShootBlock(w, system, agentId));
+				// But only welder if the integrity is not the maximum
+				if(w.get(IV4XRtags.seIntegrity) < w.get(IV4XRtags.seMaxIntegrity)) {
+					labActions.add(new seActionNavigateWelderBlock(w, system, agentId, 1, 1.0));
+				}
+			}
+
 			// FIXME: Fix Ladder2 is not observed as entityType
-			if(w.get(IV4XRtags.seDefinitionId, "").contains("Ladder2") && seReachablePositionHelper.calculateIfEntityReachable(system, w)) {
+			if(w.get(IV4XRtags.seDefinitionId, "").contains("Ladder2") && sePositionRotationHelper.calculateIfEntityReachable(system, w)) {
 				labActions.add(new seActionNavigateInteract(w, system, agentId));
 			}
 
 			// Some interactive entities allow the agent to rest inside and charge the energy
-			if(interactiveEnergyEntities.contains(w.get(IV4XRtags.entityType)) && seReachablePositionHelper.calculateIfEntityReachable(system, w)) {
+			if(interactiveEnergyEntities.contains(w.get(IV4XRtags.entityType)) && sePositionRotationHelper.calculateIfEntityReachable(system, w)) {
 				labActions.add(new seActionNavigateRechargeEnergy(w, system, agentId));
 			}
 
 			// If a Medical Room exists in the level, the agent can use the panel to charge the health and energy
 			// FIXME: Navigate near to medical room is not completely functional yet
-			if(w.get(IV4XRtags.entityType, "").contains("MedicalRoom") && seReachablePositionHelper.calculateIfEntityReachable(system, w)) {
+			if(w.get(IV4XRtags.entityType, "").contains("MedicalRoom") && sePositionRotationHelper.calculateIfEntityReachable(system, w)) {
 				labActions.add(new seActionNavigateRechargeHealth(w, system, agentId));
 			}
 		}
 
 		// If the agent has a reachable position in front of him, trigger a place block action
-		Vec3 agentPosition = SVec3.seToLab(state.get(IV4XRtags.agentWidget).get(IV4XRtags.seAgentPosition));
-		Vec3 frontPosition = new Vec3((agentPosition.x - 2.5f), agentPosition.y, agentPosition.z);
-		if(seReachablePositionHelper.calculateIfPositionIsReachable(system, frontPosition)) {
+		Vec3F agentPosition = state.get(IV4XRtags.agentWidget).get(IV4XRtags.seAgentPosition);
+		Vec3F frontPosition = new Vec3F((agentPosition.getX() - 2.5f), agentPosition.getY(), agentPosition.getZ());
+		if(sePositionRotationHelper.calculateIfPositionIsReachable(system, frontPosition)) {
 			labActions.add(new seActionTriggerBlockConstruction(state, system, agentId, "LargeHeavyBlockArmorBlock"));
 		}
 
 		// Now add the set of actions to explore level positions
-		labActions = seReachablePositionHelper.calculateExploratoryPositions(system, state, agentId, labActions);
+		labActions = sePositionRotationHelper.calculateExploratoryNodeMap(system, state, agentId, labActions, 7f);
 
 		// If it was not possible to navigate to an entity or realize a smart exploration
 		// prepare a dummy exploration
@@ -273,49 +252,25 @@ public class Protocol_se_testar_navigate_survival extends SEProtocol {
 			retAction = actionSelectorSE.prioritizedAction(state, actions);
 		}
 		if(retAction == null) {
-			System.out.println("State model based action selection did not find an action. Using default action selection.");
-			// if state model fails, use default:
+			System.out.println("State model and prioritized based action selection did not find an action. Using default action selection.");
+			// if state model and prioritize interaction fails, use default:
 			retAction = RandomActionSelector.selectAction(actions);
 		}
 		return retAction;
 	}
 
 	/**
-	 * Execute TESTAR as agent command Action
+	 * Execute the selected action.
+	 * @param system the SUT
+	 * @param state the SUT's current state
+	 * @param action the action to execute
+	 * @return whether or not the execution succeeded
 	 */
 	@Override
 	protected boolean executeAction(SUT system, State state, Action action){
-		try {
-			// adding the action that is going to be executed into HTML report:
-			htmlReport.addSelectedAction(state, action);
-
-			System.out.println(action.toShortString());
-			// execute selected action in the current state
-			action.run(system, state, settings.get(ConfigTags.ActionDuration, 0.1));
-
-			double waitTime = settings.get(ConfigTags.TimeToWaitAfterAction, 0.5);
-			Util.pause(waitTime);
-
-			SpatialXMLmap.updateInteractedBlock(action);
-
-			actionSelectorSE.addExecutedAction(action);
-
-			return true;
-
-		} catch(ActionFailedException afe){
-			return false;
-		}
+		boolean actionExecuted = super.executeAction(system, state, action);
+		if(actionExecuted) actionSelectorSE.addExecutedAction(action);
+		return actionExecuted;
 	}
 
-	/**
-	 * Here you can put graceful shutdown sequence for your SUT
-	 * @param system
-	 */
-	@Override
-	protected void stopSystem(SUT system) {
-		// Create the spatial image based on the explored level
-		SpatialXMLmap.createXMLspatialMap();
-
-		super.stopSystem(system);
-	}
 }

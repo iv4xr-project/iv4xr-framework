@@ -151,7 +151,7 @@
  		    <dependency>
             <groupId>com.github.iv4xr-project</groupId>
             <artifactId>TESTAR_iv4xr</artifactId>
-            <version>v3.4</version>
+            <version>v3.5</version>
         </dependency>
 
        <dependency>
