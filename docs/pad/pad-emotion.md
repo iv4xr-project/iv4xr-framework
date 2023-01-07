@@ -6,19 +6,21 @@ One of the components of UX is the emotional state of the user, which is altered
 
 ### PAD on the iv4XR framework
 
-The code for training and running the machine learning model able to predict the three dimensions of the PAD model is written in python and can be found in the "iv4xr-framework/python/src/pad/" folder. Agents built using the iv4XR framework can train and predict PAD emotional dimension by using the methods present in the PADModel class found in the "iv4xr-framework/src/main/java/eu/iv4xr/framework/extensions/pad/" folder.
+The code for training and running the machine learning model able to predict the three dimensions of the PAD model is written in python and can be found in the `iv4xr-framework/python/src/pad/` folder. Agents built using the iv4XR framework can train and predict PAD emotional dimension by using the methods present in the PADModel class found in the `iv4xr-framework/src/main/java/eu/iv4xr/framework/extensions/pad/` folder.
 
 The methods of the PADModel class are:
 
-#### trainModel(String folder_path)
+* `trainModel(String folder_path)`
 
-Which trains three predictive models (one for each of the PAD dimensions) based on the annotated traces found in the folder "folder_path"
+  This trains three predictive models (one for each of the PAD dimensions) based on the annotated traces found in the folder `folder_path`.
 
 
-#### trainAndSaveModel(String folder_path)
+* `trainAndSaveModel(String folder_path)`
 
-Which trains and saves as files three predictive models (one for each of the PAD dimensions) based on the annotated traces found in the folder "folder_path"
+  This trains and saves as files three predictive models (one for each of the PAD dimensions) based on the annotated traces found in the folder `folder_path`.
 
-#### predictWithTrainedModel(String folder_path, String pad_dimension, String trained_model_file)
+* `predictWithTrainedModel(String folder_path, String pad_dimension, String trained_model_file)`
 
-Which predicts the expected emotional classes for the "pad_dimension" dimension of the traces found in the "folder_path" folder using the trained model found in the path given by the "trained_model_file" variable.
+  This predicts the expected emotional classes for the `pad_dimension` dimension of the traces found in the `folder_path` folder using the trained model found in the path given by the `trained_model_file` variable.
+
+### [Example](./pad-example.md)

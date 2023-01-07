@@ -131,8 +131,8 @@ You want to do **model-based testing (MBT) on e.g. a computer game**. This needs
 
 You want to do player experience (PX) testing. There are several approaches that you can take, either one that is based on machine learning, or one that is model-based:
 
-* Using PAD approach (model free): [Documentation]
-* Using the OCC approach (model based): [Documentation](./docs/occ/occ-emotion.md)
+* Using PAD (Pleasure, Arousal and Dominance ) approach (model free): [Documentation](./docs/pad/pad-emotion.md)
+* Using an OCC-based (Ortony-Clore-Collins) approach (model based): [Documentation](./docs/occ/occ-emotion.md)
 * The OCC method allows Linear Temporal Logic (LTL) to be used to express user experience requirements
 that will be checked online (as the tests proceed).
 However, LTL can also be used offline on traces produced by tests. Both PAD and OCC approaches can be configured to produce traces. The offline version of LTL is more expressive, e.g. it can be used to express UX requirements on certain areas in a virtual world. [More on LTL-offline can be found here](https://github.com/iv4xr-project/ltl-pxevaluation).
